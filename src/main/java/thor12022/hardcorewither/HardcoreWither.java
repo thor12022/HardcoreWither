@@ -7,6 +7,7 @@ package thor12022.hardcorewither;
 
 //import biomesoplenty.api.content.BOPCBiomes;
 import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
@@ -88,7 +89,10 @@ public class HardcoreWither
       ItemRecipeRegistry.registerItemRecipes();
       BlockRecipeRegistry.registerBlockRecipes();
 
-      TinkersConstructHandler.init(event);
+      if( Loader.isModLoaded("TConstruct") )
+      {
+         TinkersConstructHandler.init(event);
+      }
    }
 
    @Mod.EventHandler

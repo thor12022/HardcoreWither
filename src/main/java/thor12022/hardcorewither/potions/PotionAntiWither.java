@@ -4,8 +4,6 @@ import java.util.Map;
 import java.util.Random;
 import java.util.Set;
 
-import tconstruct.armor.TinkerArmor;
-
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 
