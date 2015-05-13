@@ -22,11 +22,6 @@ import main.feedthecreepertweaks.client.gui.CreativeTabBaseMod;
 import main.feedthecreepertweaks.client.gui.GuiHandler;
 import main.feedthecreepertweaks.items.ItemRecipeRegistry;
 import main.feedthecreepertweaks.items.ItemRegistry;
-import main.feedthecreepertweaks.modhandlers.BuildCraftHandler;
-import main.feedthecreepertweaks.modhandlers.ExtraUtilitiesHandler;
-import main.feedthecreepertweaks.modhandlers.ProgressiveAutomationHandler;
-import main.feedthecreepertweaks.modhandlers.ThaumcraftHandler;
-import main.feedthecreepertweaks.modhandlers.BiomesOPlentyHandler;
 import main.feedthecreepertweaks.modhandlers.TinkersConstructHandler;
 import main.feedthecreepertweaks.potions.PotionRegistry;
 import main.feedthecreepertweaks.proxies.CommonProxy;
@@ -47,7 +42,7 @@ import org.apache.logging.log4j.Logger;
 import scala.Array;
 
 @Mod(modid = ModInformation.ID, name = ModInformation.NAME, version = ModInformation.VERSION, dependencies = ModInformation.DEPEND)
-public class FeedTheCreeperTweaks
+public class HardcoreWither
 {
 
    @SidedProxy(clientSide = ModInformation.CLIENTPROXY, serverSide = ModInformation.COMMONPROXY)
@@ -57,7 +52,7 @@ public class FeedTheCreeperTweaks
    public static Logger logger = LogManager.getLogger(ModInformation.NAME);
 
    @Mod.Instance
-   public static FeedTheCreeperTweaks instance;
+   public static HardcoreWither instance;
 
    private static BiomeGenBase[] vanillaOverworldBiomes = new BiomeGenBase[]
       { BiomeGenBase.plains, BiomeGenBase.desert, BiomeGenBase.extremeHills, BiomeGenBase.forest, BiomeGenBase.taiga,
@@ -79,9 +74,6 @@ public class FeedTheCreeperTweaks
       ItemRegistry.registerItems();
       BlockRegistry.registerBlocks();
       PotionRegistry.registerPotions();
-      
-      ProgressiveAutomationHandler.preinit(event);
-      ExtraUtilitiesHandler.preinit(event);
 
       OreDictHandler.registerOreDict();
       FMLCommonHandler.instance().bus().register(new EventHandler());
@@ -96,12 +88,7 @@ public class FeedTheCreeperTweaks
       ItemRecipeRegistry.registerItemRecipes();
       BlockRecipeRegistry.registerBlockRecipes();
 
-      ThaumcraftHandler.init(event);
-      BiomesOPlentyHandler.init(event);
-      ProgressiveAutomationHandler.init(event);
       TinkersConstructHandler.init(event);
-      ExtraUtilitiesHandler.init(event);
-      BuildCraftHandler.init(event);
    }
 
    @Mod.EventHandler

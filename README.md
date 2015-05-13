@@ -1,3 +1,3 @@
-#Feed the Creeper Tweaks
+#Hardcore Wither
 
-Various mod-interations and tweaks for The Feed the Creeper Tweaks Pack
+Making the Wither harder since 2015

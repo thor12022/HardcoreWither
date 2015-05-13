@@ -3,7 +3,7 @@ package main.feedthecreepertweaks.items;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import main.feedthecreepertweaks.ConfigHandler;
-import main.feedthecreepertweaks.FeedTheCreeperTweaks;
+import main.feedthecreepertweaks.HardcoreWither;
 import main.feedthecreepertweaks.ModInformation;
 import main.feedthecreepertweaks.potions.PotionAntiWither;
 import main.feedthecreepertweaks.potions.PotionRegistry;
@@ -30,7 +30,7 @@ public class ItemStarryApple extends ItemFood
       super(4, 1.2F, false);
       setUnlocalizedName(ModInformation.ID + ".starryApple");
       setTextureName(ModInformation.ID + ":starryApple");
-      setCreativeTab(FeedTheCreeperTweaks.tabBaseMod);
+      setCreativeTab(HardcoreWither.tabBaseMod);
       this.setAlwaysEdible();
    }
    

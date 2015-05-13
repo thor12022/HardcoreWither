@@ -5,7 +5,7 @@ package main.feedthecreepertweaks.items;
  * Extend this for pretty much every item you make.
  */
 
-import main.feedthecreepertweaks.FeedTheCreeperTweaks;
+import main.feedthecreepertweaks.HardcoreWither;
 import main.feedthecreepertweaks.ModInformation;
 import net.minecraft.item.Item;
 
@@ -20,7 +20,7 @@ public class ItemBase extends Item
 
       setUnlocalizedName(ModInformation.ID + "." + unlocName);
       setTextureName(ModInformation.ID + ":" + textureName);
-      setCreativeTab(FeedTheCreeperTweaks.tabBaseMod);
+      setCreativeTab(HardcoreWither.tabBaseMod);
    }
 
    // If you are setting multiple textures for your item. IE: Metadata items.
@@ -29,6 +29,6 @@ public class ItemBase extends Item
       super();
 
       setUnlocalizedName(ModInformation.ID + "." + unlocName);
-      setCreativeTab(FeedTheCreeperTweaks.tabBaseMod);
+      setCreativeTab(HardcoreWither.tabBaseMod);
    }
 }

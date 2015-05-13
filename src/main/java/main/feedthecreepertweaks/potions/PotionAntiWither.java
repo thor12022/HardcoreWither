@@ -13,7 +13,7 @@ import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import main.feedthecreepertweaks.ConfigHandler;
-import main.feedthecreepertweaks.FeedTheCreeperTweaks;
+import main.feedthecreepertweaks.HardcoreWither;
 import main.feedthecreepertweaks.ModInformation;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.EntityLivingBase;
@@ -90,7 +90,7 @@ public class PotionAntiWither extends Potion
             if( witherEffect.getDuration() > affectedEntities.get(event.entityLiving) )
             {
                int newDuration = ( witherEffect.getDuration() - affectedEntities.get(event.entityLiving) ) / ( 2 * (antiWitherEffect.getAmplifier() + 1));
-               FeedTheCreeperTweaks.logger.debug("Anti-Wither reducing Wither effect to " + newDuration/20 + " seconds for " + event.entityLiving.getCommandSenderName());
+               HardcoreWither.logger.debug("Anti-Wither reducing Wither effect to " + newDuration/20 + " seconds for " + event.entityLiving.getCommandSenderName());
                int amplifier = witherEffect.getAmplifier();
                event.entityLiving.removePotionEffect(Potion.wither.id);
                event.entityLiving.addPotionEffect(new PotionEffect(Potion.wither.id, newDuration, amplifier));

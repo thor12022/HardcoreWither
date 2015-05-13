@@ -7,12 +7,9 @@ package main.feedthecreepertweaks.items;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.vanhal.progressiveautomation.items.tools.RecipeWitherTool;
-import com.vanhal.progressiveautomation.items.tools.WitherTools;
-
 import cpw.mods.fml.common.registry.GameRegistry;
 import main.feedthecreepertweaks.ConfigHandler;
-import main.feedthecreepertweaks.FeedTheCreeperTweaks;
+import main.feedthecreepertweaks.HardcoreWither;
 import main.feedthecreepertweaks.blocks.BlockRegistry;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;

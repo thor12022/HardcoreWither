@@ -13,7 +13,7 @@ import net.minecraftforge.event.entity.player.PlayerUseItemEvent;
 import cpw.mods.fml.client.event.ConfigChangedEvent;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import main.feedthecreepertweaks.ConfigHandler;
-import main.feedthecreepertweaks.FeedTheCreeperTweaks;
+import main.feedthecreepertweaks.HardcoreWither;
 import main.feedthecreepertweaks.ModInformation;
 
 public class EventHandler
@@ -25,7 +25,7 @@ public class EventHandler
       if(eventArgs.modID.equals(ModInformation.ID))
       {
          ConfigHandler.syncConfig();
-         FeedTheCreeperTweaks.logger.info(TextHelper.localize("info." + ModInformation.ID + ".console.config.refresh"));
+         HardcoreWither.logger.info(TextHelper.localize("info." + ModInformation.ID + ".console.config.refresh"));
       }
    }
 }

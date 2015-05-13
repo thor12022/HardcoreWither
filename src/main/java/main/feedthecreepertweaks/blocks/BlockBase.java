@@ -5,7 +5,7 @@ package main.feedthecreepertweaks.blocks;
  * Extend this for pretty much every block you make.
  */
 
-import main.feedthecreepertweaks.FeedTheCreeperTweaks;
+import main.feedthecreepertweaks.HardcoreWither;
 import main.feedthecreepertweaks.ModInformation;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -21,7 +21,7 @@ public class BlockBase extends Block
 
       setBlockName(ModInformation.ID + "." + unlocName);
       setBlockTextureName(ModInformation.ID + ":" + textureName);
-      setCreativeTab(FeedTheCreeperTweaks.tabBaseMod);
+      setCreativeTab(HardcoreWither.tabBaseMod);
       setStepSound(soundType);
       setHardness(hardness);
    }
@@ -32,7 +32,7 @@ public class BlockBase extends Block
       super(material);
 
       setBlockName(ModInformation.ID + "." + unlocName);
-      setCreativeTab(FeedTheCreeperTweaks.tabBaseMod);
+      setCreativeTab(HardcoreWither.tabBaseMod);
       setStepSound(soundType);
       setHardness(hardness);
    }

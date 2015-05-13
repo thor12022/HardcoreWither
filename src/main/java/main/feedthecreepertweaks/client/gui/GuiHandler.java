@@ -1,7 +1,6 @@
 package main.feedthecreepertweaks.client.gui;
 
 import cpw.mods.fml.common.network.IGuiHandler;
-import main.feedthecreepertweaks.FeedTheCreeperTweaks;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.World;
 

@@ -1,9 +1,8 @@
 package main.feedthecreepertweaks.potions;
 
-import biomesoplenty.common.helpers.BOPReflectionHelper;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import main.feedthecreepertweaks.ConfigHandler;
-import main.feedthecreepertweaks.FeedTheCreeperTweaks;
+import main.feedthecreepertweaks.HardcoreWither;
 import net.minecraft.potion.Potion;
 
 public class PotionRegistry
@@ -17,7 +16,7 @@ public class PotionRegistry
          ConfigHandler.antiWitherPotionId = NextPotionId();
       }
       
-      FeedTheCreeperTweaks.logger.debug("Assigning Potion ID " + ConfigHandler.antiWitherPotionId + " to Anti-Wither");
+      HardcoreWither.logger.debug("Assigning Potion ID " + ConfigHandler.antiWitherPotionId + " to Anti-Wither");
       potionAntiWither = new PotionAntiWither(ConfigHandler.antiWitherPotionId).setPotionName("potion.antiWither");
    }
 
