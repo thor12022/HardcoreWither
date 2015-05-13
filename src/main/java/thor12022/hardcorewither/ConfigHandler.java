@@ -24,6 +24,7 @@ public class ConfigHandler
    public static int antiWitherPotionId = 30;
    public static boolean enableGreenHeartCanister = true;
    public static boolean enableGreenHeartWitherDrop = true;
+   public static int greenHeartDropRarity = 2;
    
    public static void init(File file)
    {
@@ -39,6 +40,9 @@ public class ConfigHandler
       
       enableGreenHeartCanister = config.getBoolean("Enable Green Heart Canister Crafting",tinkersConstructSection, enableGreenHeartCanister, "Requires Tinkers' Construct");
       enableGreenHeartWitherDrop = config.getBoolean("Enable Withers Dropping Green Hearts",tinkersConstructSection, enableGreenHeartWitherDrop, "Requires Tinkers' Construct");
+      greenHeartDropRarity = config.getInt("Anti-Wither Potion ID", generalSection, greenHeartDropRarity, 0, Integer.MAX_VALUE, "How rare the Green Heart drop is, 0 is guarnenteed 1 per level of fortune");
+      
+      
       
       config.save();
    }

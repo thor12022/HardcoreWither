@@ -70,9 +70,9 @@ public class TinkersConstructHandler
                    //FeedTheCreeperTweaks.logger.debug("They were withered!");
                    Random rand = new Random();
                    int numberOfHearts = 0;
-                   for( int lootingLevel = event.lootingLevel; lootingLevel >= 0; --lootingLevel)
+                   for( int lootingLevel = event.lootingLevel; lootingLevel > 0; --lootingLevel)
                    {
-                      numberOfHearts += rand.nextInt(2);
+                      numberOfHearts += rand.nextInt(ConfigHandler.greenHeartDropRarity) == 0 ? 1 : 0;
                    }
                    ItemHelper.addDrops(event, new ItemStack(TinkerArmor.heartCanister, numberOfHearts, 5));
                    HardcoreWither.logger.debug("Withered Anti-Withered Player killed Wither, dropping Miniture" + numberOfHearts + " Green Hearts");
