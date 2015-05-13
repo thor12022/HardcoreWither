@@ -1,4 +1,4 @@
-package main.feedthecreepertweaks;
+package main.hardcorewither;
 
 /*
  * Creation and usage of the config file.

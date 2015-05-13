@@ -1,4 +1,4 @@
-package main.feedthecreepertweaks;
+package main.hardcorewither;
 
 /*
  * Basic information your mod depends on.
@@ -12,6 +12,6 @@ public class ModInformation
    public static final String CHANNEL = "HardcoreWither";
    public static final String DEPEND = "required-after:TConstruct";
    public static final String VERSION = "1.1.0";
-   public static final String CLIENTPROXY = "main.feedthecreepertweaks.proxies.ClientProxy";
-   public static final String COMMONPROXY = "main.feedthecreepertweaks.proxies.CommonProxy";;
+   public static final String CLIENTPROXY = "main.hardcorewither.proxies.ClientProxy";
+   public static final String COMMONPROXY = "main.hardcorewither.proxies.CommonProxy";;
 }

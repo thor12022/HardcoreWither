@@ -1,4 +1,4 @@
-package main.feedthecreepertweaks;
+package main.hardcorewither;
 
 /*
  * Check all the classes for (hopefully) detailed descriptions of what it does. There will also be tidbits of comments throughout the codebase.
@@ -16,18 +16,18 @@ import cpw.mods.fml.common.event.FMLServerStartedEvent;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.registry.EntityRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
-import main.feedthecreepertweaks.blocks.BlockRecipeRegistry;
-import main.feedthecreepertweaks.blocks.BlockRegistry;
-import main.feedthecreepertweaks.client.gui.CreativeTabBaseMod;
-import main.feedthecreepertweaks.client.gui.GuiHandler;
-import main.feedthecreepertweaks.items.ItemRecipeRegistry;
-import main.feedthecreepertweaks.items.ItemRegistry;
-import main.feedthecreepertweaks.modhandlers.TinkersConstructHandler;
-import main.feedthecreepertweaks.potions.PotionRegistry;
-import main.feedthecreepertweaks.proxies.CommonProxy;
-import main.feedthecreepertweaks.util.EventHandler;
-import main.feedthecreepertweaks.util.OreDictHandler;
-import main.feedthecreepertweaks.util.TextHelper;
+import main.hardcorewither.blocks.BlockRecipeRegistry;
+import main.hardcorewither.blocks.BlockRegistry;
+import main.hardcorewither.client.gui.CreativeTabBaseMod;
+import main.hardcorewither.client.gui.GuiHandler;
+import main.hardcorewither.items.ItemRecipeRegistry;
+import main.hardcorewither.items.ItemRegistry;
+import main.hardcorewither.modhandlers.TinkersConstructHandler;
+import main.hardcorewither.potions.PotionRegistry;
+import main.hardcorewither.proxies.CommonProxy;
+import main.hardcorewither.util.EventHandler;
+import main.hardcorewither.util.OreDictHandler;
+import main.hardcorewither.util.TextHelper;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.item.crafting.FurnaceRecipes;

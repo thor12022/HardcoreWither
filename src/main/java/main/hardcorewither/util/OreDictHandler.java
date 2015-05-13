@@ -1,9 +1,9 @@
-package main.feedthecreepertweaks.util;
+package main.hardcorewither.util;
 
 //General place to register all oreDict recipes.
 
-import main.feedthecreepertweaks.blocks.BlockRegistry;
-import main.feedthecreepertweaks.items.ItemRegistry;
+import main.hardcorewither.blocks.BlockRegistry;
+import main.hardcorewither.items.ItemRegistry;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;

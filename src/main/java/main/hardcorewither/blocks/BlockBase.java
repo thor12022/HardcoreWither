@@ -1,12 +1,12 @@
-package main.feedthecreepertweaks.blocks;
+package main.hardcorewither.blocks;
 
 /*
  * Base block class for getting standard things done with quickly.
  * Extend this for pretty much every block you make.
  */
 
-import main.feedthecreepertweaks.HardcoreWither;
-import main.feedthecreepertweaks.ModInformation;
+import main.hardcorewither.HardcoreWither;
+import main.hardcorewither.ModInformation;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 

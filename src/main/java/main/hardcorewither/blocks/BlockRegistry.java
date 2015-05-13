@@ -1,4 +1,4 @@
-package main.feedthecreepertweaks.blocks;
+package main.hardcorewither.blocks;
 
 //General place to register all your blocks.
 

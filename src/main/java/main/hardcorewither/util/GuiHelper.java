@@ -1,4 +1,4 @@
-package main.feedthecreepertweaks.util;
+package main.hardcorewither.util;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreenBook;

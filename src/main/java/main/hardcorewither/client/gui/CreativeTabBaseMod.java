@@ -1,9 +1,9 @@
-package main.feedthecreepertweaks.client.gui;
+package main.hardcorewither.client.gui;
 
 //Creates your creative tab.
 
-import main.feedthecreepertweaks.ModInformation;
-import main.feedthecreepertweaks.items.ItemRegistry;
+import main.hardcorewither.ModInformation;
+import main.hardcorewither.items.ItemRegistry;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;

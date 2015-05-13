@@ -1,4 +1,4 @@
-package main.feedthecreepertweaks.util;
+package main.hardcorewither.util;
 
 /*
  * Class for most of your events to be registered in.
@@ -12,9 +12,9 @@ import net.minecraft.util.ChatComponentTranslation;
 import net.minecraftforge.event.entity.player.PlayerUseItemEvent;
 import cpw.mods.fml.client.event.ConfigChangedEvent;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import main.feedthecreepertweaks.ConfigHandler;
-import main.feedthecreepertweaks.HardcoreWither;
-import main.feedthecreepertweaks.ModInformation;
+import main.hardcorewither.ConfigHandler;
+import main.hardcorewither.HardcoreWither;
+import main.hardcorewither.ModInformation;
 
 public class EventHandler
 {

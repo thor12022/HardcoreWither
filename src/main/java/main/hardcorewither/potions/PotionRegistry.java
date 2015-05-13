@@ -1,8 +1,8 @@
-package main.feedthecreepertweaks.potions;
+package main.hardcorewither.potions;
 
 import cpw.mods.fml.common.event.FMLInitializationEvent;
-import main.feedthecreepertweaks.ConfigHandler;
-import main.feedthecreepertweaks.HardcoreWither;
+import main.hardcorewither.ConfigHandler;
+import main.hardcorewither.HardcoreWither;
 import net.minecraft.potion.Potion;
 
 public class PotionRegistry

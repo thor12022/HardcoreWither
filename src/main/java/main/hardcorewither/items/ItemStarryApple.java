@@ -1,13 +1,13 @@
-package main.feedthecreepertweaks.items;
+package main.hardcorewither.items;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import main.feedthecreepertweaks.ConfigHandler;
-import main.feedthecreepertweaks.HardcoreWither;
-import main.feedthecreepertweaks.ModInformation;
-import main.feedthecreepertweaks.potions.PotionAntiWither;
-import main.feedthecreepertweaks.potions.PotionRegistry;
-import main.feedthecreepertweaks.util.TextHelper;
+import main.hardcorewither.ConfigHandler;
+import main.hardcorewither.HardcoreWither;
+import main.hardcorewither.ModInformation;
+import main.hardcorewither.potions.PotionAntiWither;
+import main.hardcorewither.potions.PotionRegistry;
+import main.hardcorewither.util.TextHelper;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;

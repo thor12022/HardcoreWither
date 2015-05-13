@@ -1,4 +1,4 @@
-package main.feedthecreepertweaks.util;
+package main.hardcorewither.util;
 
 //General place to store keyboard press events.
 

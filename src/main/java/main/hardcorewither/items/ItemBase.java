@@ -1,12 +1,12 @@
-package main.feedthecreepertweaks.items;
+package main.hardcorewither.items;
 
 /*
  * Base item class for getting standard things done with quickly.
  * Extend this for pretty much every item you make.
  */
 
-import main.feedthecreepertweaks.HardcoreWither;
-import main.feedthecreepertweaks.ModInformation;
+import main.hardcorewither.HardcoreWither;
+import main.hardcorewither.ModInformation;
 import net.minecraft.item.Item;
 
 public class ItemBase extends Item

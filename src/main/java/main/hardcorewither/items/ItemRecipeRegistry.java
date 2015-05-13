@@ -1,4 +1,4 @@
-package main.feedthecreepertweaks.items;
+package main.hardcorewither.items;
 
 /*
  * General place to do all your item related recipe things'n'stuff.
@@ -8,9 +8,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import cpw.mods.fml.common.registry.GameRegistry;
-import main.feedthecreepertweaks.ConfigHandler;
-import main.feedthecreepertweaks.HardcoreWither;
-import main.feedthecreepertweaks.blocks.BlockRegistry;
+import main.hardcorewither.ConfigHandler;
+import main.hardcorewither.HardcoreWither;
+import main.hardcorewither.blocks.BlockRegistry;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;

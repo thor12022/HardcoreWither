@@ -1,4 +1,4 @@
-package main.feedthecreepertweaks.modhandlers;
+package main.hardcorewither.modhandlers;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,11 +9,11 @@ import tconstruct.util.ItemHelper;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.registry.GameRegistry;
-import main.feedthecreepertweaks.ConfigHandler;
-import main.feedthecreepertweaks.FeedTheCreeperTweaks;
-import main.feedthecreepertweaks.ModInformation;
-import main.feedthecreepertweaks.potions.PotionAntiWither;
-import main.feedthecreepertweaks.potions.PotionRegistry;
+import main.hardcorewither.ConfigHandler;
+import main.hardcorewither.FeedTheCreeperTweaks;
+import main.hardcorewither.ModInformation;
+import main.hardcorewither.potions.PotionAntiWither;
+import main.hardcorewither.potions.PotionRegistry;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;

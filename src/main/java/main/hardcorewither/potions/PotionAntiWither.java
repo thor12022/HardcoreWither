@@ -1,4 +1,4 @@
-package main.feedthecreepertweaks.potions;
+package main.hardcorewither.potions;
 
 import java.util.Map;
 import java.util.Random;
@@ -12,9 +12,9 @@ import com.google.common.collect.Sets;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import main.feedthecreepertweaks.ConfigHandler;
-import main.feedthecreepertweaks.HardcoreWither;
-import main.feedthecreepertweaks.ModInformation;
+import main.hardcorewither.ConfigHandler;
+import main.hardcorewither.HardcoreWither;
+import main.hardcorewither.ModInformation;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.ai.attributes.BaseAttributeMap;

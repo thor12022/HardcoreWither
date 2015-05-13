@@ -1,4 +1,4 @@
-package main.feedthecreepertweaks.items;
+package main.hardcorewither.items;
 
 /*
  * Class to register your blocks in.
@@ -7,8 +7,8 @@ package main.feedthecreepertweaks.items;
  */
 
 import cpw.mods.fml.common.registry.GameRegistry;
-import main.feedthecreepertweaks.ConfigHandler;
-import main.feedthecreepertweaks.ModInformation;
+import main.hardcorewither.ConfigHandler;
+import main.hardcorewither.ModInformation;
 import net.minecraft.item.Item;
 import net.minecraft.item.Item.ToolMaterial;
 import net.minecraftforge.common.util.EnumHelper;
