@@ -35,7 +35,7 @@ public class ConfigHandler
    {
       doDebug = config.getBoolean("Debug Information",generalSection, doDebug, "");
       enableStarryApple = config.getBoolean("Enable Starry Apple",generalSection, enableStarryApple, "");
-      antiWitherPotionId = config.getInt("Anti-Wither Potion ID", generalSection, antiWitherPotionId, 24, Potion.potionTypes.length, "Set to -1 to attempt an auto-assignment (experimental)");
+      antiWitherPotionId = config.getInt("Anti-Wither Potion ID", generalSection, antiWitherPotionId, 24, Potion.potionTypes.length-1, "Set to -1 to attempt an auto-assignment (experimental)");
       
       enableGreenHeartCanister = config.getBoolean("Enable Green Heart Canister Crafting",tinkersConstructSection, enableGreenHeartCanister, "Requires Tinkers' Construct");
       enableGreenHeartWitherDrop = config.getBoolean("Enable Withers Dropping Green Hearts",tinkersConstructSection, enableGreenHeartWitherDrop, "Requires Tinkers' Construct");
