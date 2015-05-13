@@ -10,7 +10,7 @@ import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.registry.GameRegistry;
 import thor12022.hardcorewither.ConfigHandler;
-import thor12022.hardcorewither.FeedTheCreeperTweaks;
+import thor12022.hardcorewither.HardcoreWither;
 import thor12022.hardcorewither.ModInformation;
 import thor12022.hardcorewither.potions.PotionAntiWither;
 import thor12022.hardcorewither.potions.PotionRegistry;
@@ -75,7 +75,7 @@ public class TinkersConstructHandler
                       numberOfHearts += rand.nextInt(2);
                    }
                    ItemHelper.addDrops(event, new ItemStack(TinkerArmor.heartCanister, numberOfHearts, 5));
-                   FeedTheCreeperTweaks.logger.debug("Withered Anti-Withered Player killed Wither, dropping Miniture" + numberOfHearts + " Green Hearts");
+                   HardcoreWither.logger.debug("Withered Anti-Withered Player killed Wither, dropping Miniture" + numberOfHearts + " Green Hearts");
                 }
              }
              
