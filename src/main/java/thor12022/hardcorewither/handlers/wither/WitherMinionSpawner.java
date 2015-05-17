@@ -1,4 +1,4 @@
-package thor12022.hardcorewither.handlers;
+package thor12022.hardcorewither.handlers.wither;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -29,15 +29,13 @@ enum WitherState
    Melee
 };
 
-public class WitherHandler
-{
-   private class WitherMinionSpawnLogic extends MobSpawnerBaseLogic
+class WitherMinionSpawner extends MobSpawnerBaseLogic
    {
       
       private EntityWither ownerWither;
       private WitherState witherState;   //!< Should never set this directly, use setState(MinionSpawnerState)
       
-      WitherMinionSpawnLogic(EntityWither theOwnerWither)
+      WitherMinionSpawner(EntityWither theOwnerWither)
       {
          ownerWither = theOwnerWither;
          witherState = WitherState.Init;
@@ -139,44 +137,3 @@ public class WitherHandler
          witherState = state;
       }
    };
-
-   private Map<UUID, WitherMinionSpawnLogic> witherSpawnerMap ;
-
-   public WitherHandler()
-   {
-      witherSpawnerMap = new HashMap<UUID, WitherMinionSpawnLogic>();
-      MinecraftForge.EVENT_BUS.register(this);
-   }
-   
-   private void AttachSpawner(EntityWither wither)
-   {
-      HardcoreWither.logger.debug("Attaching Minion Spawner to Wither");
-      WitherMinionSpawnLogic minionSpawner = new WitherMinionSpawnLogic(wither);
-      witherSpawnerMap.put(wither.getUniqueID(), minionSpawner);
-   }
-   
-   @SubscribeEvent
-   public void onLivingUpdate(LivingUpdateEvent event)
-   {
-      if (event.entityLiving != null && event.entityLiving.getClass() == EntityWither.class)
-      {
-         try
-         {
-            witherSpawnerMap.get(event.entityLiving.getUniqueID()).updateSpawner();
-         }
-         catch( NullPointerException e)
-         {
-            AttachSpawner((EntityWither)event.entityLiving);
-         }
-      }
-   }
-
-   @SubscribeEvent
-   public void onEntitySpawn(LivingSpawnEvent event)
-   {
-      if (event.entityLiving != null && event.entityLiving.getClass() == EntityWither.class)
-      {
-         AttachSpawner((EntityWither)event.entityLiving);
-      }
-   }
-}

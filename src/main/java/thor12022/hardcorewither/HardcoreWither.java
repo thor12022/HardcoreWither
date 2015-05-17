@@ -24,7 +24,7 @@ import thor12022.hardcorewither.client.gui.GuiHandler;
 import thor12022.hardcorewither.items.ItemRecipeRegistry;
 import thor12022.hardcorewither.items.ItemRegistry;
 import thor12022.hardcorewither.handlers.TinkersConstructHandler;
-import thor12022.hardcorewither.handlers.WitherHandler;
+import thor12022.hardcorewither.handlers.wither.WitherHandler;
 import thor12022.hardcorewither.potions.PotionRegistry;
 import thor12022.hardcorewither.proxies.CommonProxy;
 import thor12022.hardcorewither.util.EventHandler;
