@@ -23,7 +23,8 @@ import thor12022.hardcorewither.client.gui.CreativeTabBaseMod;
 import thor12022.hardcorewither.client.gui.GuiHandler;
 import thor12022.hardcorewither.items.ItemRecipeRegistry;
 import thor12022.hardcorewither.items.ItemRegistry;
-import thor12022.hardcorewither.modhandlers.TinkersConstructHandler;
+import thor12022.hardcorewither.handlers.TinkersConstructHandler;
+import thor12022.hardcorewither.handlers.WitherHandler;
 import thor12022.hardcorewither.potions.PotionRegistry;
 import thor12022.hardcorewither.proxies.CommonProxy;
 import thor12022.hardcorewither.util.EventHandler;
@@ -54,6 +55,7 @@ public class HardcoreWither
 
    @Mod.Instance
    public static HardcoreWither instance;
+   private static WitherHandler witherHandler = new WitherHandler();
 
    private static BiomeGenBase[] vanillaOverworldBiomes = new BiomeGenBase[]
       { BiomeGenBase.plains, BiomeGenBase.desert, BiomeGenBase.extremeHills, BiomeGenBase.forest, BiomeGenBase.taiga,

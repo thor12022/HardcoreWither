@@ -1,4 +1,4 @@
-package thor12022.hardcorewither.modhandlers;
+package thor12022.hardcorewither.handlers;
 
 import java.util.ArrayList;
 import java.util.List;
