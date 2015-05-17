@@ -23,3 +23,6 @@ info.hardcorewither.console.load.postInit=Begin Post-initialization
 
 #CHAT
 info.hardcorewither.chat.never-withered=No Pain. No Gain. No Green Heart.
+
+# ENTITY NAMES
+entity.hardcorewither.BlazeMinion.name=Blaze

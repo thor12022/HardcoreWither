@@ -15,12 +15,12 @@ import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartedEvent;
 import cpw.mods.fml.common.network.NetworkRegistry;
-import cpw.mods.fml.common.registry.EntityRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
 import thor12022.hardcorewither.blocks.BlockRecipeRegistry;
 import thor12022.hardcorewither.blocks.BlockRegistry;
 import thor12022.hardcorewither.client.gui.CreativeTabBaseMod;
 import thor12022.hardcorewither.client.gui.GuiHandler;
+import thor12022.hardcorewither.entity.EntityRegistry;
 import thor12022.hardcorewither.items.ItemRecipeRegistry;
 import thor12022.hardcorewither.items.ItemRegistry;
 import thor12022.hardcorewither.handlers.TinkersConstructHandler;
@@ -77,6 +77,7 @@ public class HardcoreWither
       ItemRegistry.registerItems();
       BlockRegistry.registerBlocks();
       PotionRegistry.registerPotions();
+      EntityRegistry.register();
 
       OreDictHandler.registerOreDict();
       FMLCommonHandler.instance().bus().register(new EventHandler());

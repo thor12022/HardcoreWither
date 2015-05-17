@@ -17,6 +17,7 @@ import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
 import net.minecraftforge.event.entity.living.LivingSpawnEvent;
 import thor12022.hardcorewither.ConfigHandler;
 import thor12022.hardcorewither.HardcoreWither;
+import thor12022.hardcorewither.entity.EntityBlazeMinion;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -111,26 +112,44 @@ class WitherMinionSpawner extends MobSpawnerBaseLogic
                break;
             case Charging:
             {
-               setEntityName("Blaze");
-               //NBTTagCompound nbt = new NBTTagCompound();
-               //nbt.setShort("RequiredPlayerRange", (short)64);
-               //readFromNBT(nbt);
+               NBTTagCompound nbt = new NBTTagCompound();
+               nbt.setString("EntityId", EntityBlazeMinion.LOCALIZED_NAME);
+               nbt.setShort("Delay", (short)10);
+               nbt.setShort("RequiredPlayerRange", (short)64);
+               nbt.setShort("MaxNearbyEntities", (short)128);
+               nbt.setShort("MinSpawnDelay", (short)10);
+               nbt.setShort("MaxSpawnDelay", (short)30);
+               nbt.setShort("SpawnCount", (short)4);
+               nbt.setShort("SpawnRange", (short)16);
+               readFromNBT(nbt);
                break;
             }
             case Airborne:
             {
-               setEntityName("Ghast");
-               //NBTTagCompound nbt = new NBTTagCompound();
-               //nbt.setShort("RequiredPlayerRange", (short)64);
-               //readFromNBT(nbt);
+               NBTTagCompound nbt = new NBTTagCompound();
+               nbt.setString("EntityId", "Ghast");
+               nbt.setShort("Delay", (short)10);
+               nbt.setShort("RequiredPlayerRange", (short)64);
+               nbt.setShort("MaxNearbyEntities", (short)128);
+               nbt.setShort("MinSpawnDelay", (short)10);
+               nbt.setShort("MaxSpawnDelay", (short)30);
+               nbt.setShort("SpawnCount", (short)4);
+               nbt.setShort("SpawnRange", (short)16);
+               readFromNBT(nbt);
                break;
             }
             case Melee:
             {
-               setEntityName("Zombie");
-               //NBTTagCompound nbt = new NBTTagCompound();
-               //nbt.setShort("RequiredPlayerRange", (short)32);
-               //readFromNBT(nbt);
+               NBTTagCompound nbt = new NBTTagCompound();
+               nbt.setString("EntityId", "Skeleton");
+               nbt.setShort("Delay", (short)10);
+               nbt.setShort("RequiredPlayerRange", (short)64);
+               nbt.setShort("MaxNearbyEntities", (short)128);
+               nbt.setShort("MinSpawnDelay", (short)10);
+               nbt.setShort("MaxSpawnDelay", (short)30);
+               nbt.setShort("SpawnCount", (short)4);
+               nbt.setShort("SpawnRange", (short)16);
+               readFromNBT(nbt);
                break;
             }
          }
