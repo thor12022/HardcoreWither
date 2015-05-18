@@ -4,16 +4,16 @@ import thor12022.hardcorewither.ModInformation;
 import net.minecraft.entity.EnumCreatureAttribute;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.boss.EntityWither;
-import net.minecraft.entity.monster.EntityBlaze;
+import net.minecraft.entity.monster.EntityGhast;
 import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
 
-public class EntityBlazeMinion extends EntityBlaze
+public class EntityGhastMinion extends EntityGhast
 {
-   public static final String UNLOCALIZED_NAME = "BlazeMinion";
+   public static final String UNLOCALIZED_NAME = "GhastMinion";
    public static final String LOCALIZED_NAME = ModInformation.ID + "." + UNLOCALIZED_NAME;
-   
-   public EntityBlazeMinion(World p_i1731_1_)
+
+   public EntityGhastMinion(World p_i1731_1_)
    {
       super(p_i1731_1_);
    }
