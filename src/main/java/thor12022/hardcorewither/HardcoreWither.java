@@ -56,16 +56,7 @@ public class HardcoreWither
    @Mod.Instance
    public static HardcoreWither instance;
    private static WitherHandler witherHandler = new WitherHandler();
-
-   private static BiomeGenBase[] vanillaOverworldBiomes = new BiomeGenBase[]
-      { BiomeGenBase.plains, BiomeGenBase.desert, BiomeGenBase.extremeHills, BiomeGenBase.forest, BiomeGenBase.taiga,
-            BiomeGenBase.swampland, BiomeGenBase.icePlains, BiomeGenBase.iceMountains, BiomeGenBase.beach,
-            BiomeGenBase.desertHills, BiomeGenBase.forestHills, BiomeGenBase.taigaHills, BiomeGenBase.extremeHillsEdge,
-            BiomeGenBase.jungle, BiomeGenBase.jungleHills, BiomeGenBase.jungleEdge, BiomeGenBase.stoneBeach,
-            BiomeGenBase.coldBeach, BiomeGenBase.birchForest, BiomeGenBase.birchForestHills, BiomeGenBase.roofedForest,
-            BiomeGenBase.coldTaiga, BiomeGenBase.coldTaigaHills, BiomeGenBase.megaTaiga, BiomeGenBase.megaTaigaHills,
-            BiomeGenBase.extremeHillsPlus, BiomeGenBase.savanna, BiomeGenBase.savannaPlateau, BiomeGenBase.mesa,
-            BiomeGenBase.mesaPlateau, BiomeGenBase.mesaPlateau_F };
+   private static DataStore dataStore = new DataStore();
 
    @Mod.EventHandler
    public void preInit(FMLPreInitializationEvent event)
