@@ -29,7 +29,7 @@ public class DataStore
       MinecraftForge.EVENT_BUS.register(this);
    }
    
-   private void openFile()
+   private void getDataFile()
    {
       File worldConfig = DimensionManager.getCurrentSaveRootDirectory();
       File hardcoreWitherFolder = new File( worldConfig.getPath(), ModInformation.CHANNEL );
@@ -42,13 +42,14 @@ public class DataStore
          saveFile = new File(hardcoreWitherFolder, ModInformation.CHANNEL + ".dat");
          try
          {
-            if( !saveFile.exists() || !saveFile.createNewFile() )
+            if( !saveFile.exists() && !saveFile.createNewFile() )
             {
                HardcoreWither.logger.error("Failed to create " + saveFile.getAbsolutePath() + " data will not save" );
+               saveFile = null;
             }
             else
             {
-               saveFile = null;
+               HardcoreWither.logger.debug("Data file: " + saveFile.getAbsolutePath() + " found/created" );
             }
          } catch (IOException e)
          {
@@ -77,11 +78,12 @@ public class DataStore
          {
             fileOutputStream = new FileOutputStream( saveFile );
             CompressedStreamTools.writeCompressed(data, fileOutputStream );
+            HardcoreWither.logger.debug("Saved data" );
          }
          catch( Throwable e )
          {
             data = new NBTTagCompound();
-            HardcoreWither.logger.error("Cannot save data" );
+            HardcoreWither.logger.error("Error saving data" );
          }
       }
    }
@@ -108,7 +110,7 @@ public class DataStore
       {
          return;
       }
-      openFile();
+      getDataFile();
       if( saveFile == null )
       {
          HardcoreWither.logger.error("Cannot load data" );
@@ -120,11 +122,12 @@ public class DataStore
          {
             fileInputStream = new FileInputStream( saveFile );
             data = CompressedStreamTools.readCompressed( fileInputStream );
+            HardcoreWither.logger.debug("Data loaded" );
          }
          catch( Throwable e )
          {
             data = new NBTTagCompound();
-            HardcoreWither.logger.error("Cannot load data" );
+            HardcoreWither.logger.error("Error loading data" );
          }
       }
    }
