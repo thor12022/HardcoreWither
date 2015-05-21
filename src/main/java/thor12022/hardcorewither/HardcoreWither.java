@@ -23,6 +23,7 @@ import thor12022.hardcorewither.client.gui.GuiHandler;
 import thor12022.hardcorewither.entity.EntityRegistry;
 import thor12022.hardcorewither.items.ItemRecipeRegistry;
 import thor12022.hardcorewither.items.ItemRegistry;
+import thor12022.hardcorewither.handlers.DataStoreHandler;
 import thor12022.hardcorewither.handlers.PlayerHandler;
 import thor12022.hardcorewither.handlers.TinkersConstructHandler;
 import thor12022.hardcorewither.handlers.wither.WitherHandler;
@@ -57,9 +58,18 @@ public class HardcoreWither
    @Mod.Instance
    public   static HardcoreWither   instance;
 
-   private  static WitherHandler witherHandler  =  new WitherHandler();
-   private  static PlayerHandler playerHandler  =  new PlayerHandler();
-   private  static DataStore     dataStore      =  new DataStore();
+   private  WitherHandler    witherHandler;
+   private  PlayerHandler    playerHandler;
+   private  DataStoreHandler dataStore;
+   
+   public HardcoreWither()
+   {
+      witherHandler  =  new WitherHandler();
+      playerHandler  =  new PlayerHandler();
+      dataStore      =  new DataStoreHandler();
+      
+      dataStore.addStorageClass(playerHandler, "PlayerHandler");
+   }
 
    @Mod.EventHandler
    public void preInit(FMLPreInitializationEvent event)

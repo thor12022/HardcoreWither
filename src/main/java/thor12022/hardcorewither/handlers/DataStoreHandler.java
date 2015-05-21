@@ -1,12 +1,17 @@
-package thor12022.hardcorewither;
+package thor12022.hardcorewither.handlers;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
 
 import thor12022.hardcorewither.HardcoreWither;
+import thor12022.hardcorewither.INBTStorageClass;
 import thor12022.hardcorewither.ModInformation;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
@@ -19,14 +24,20 @@ import net.minecraftforge.event.world.WorldEvent.Load;
 import net.minecraftforge.event.world.WorldEvent.Save;
 import net.minecraftforge.event.world.WorldEvent.Unload;
 
-public class DataStore
+public class DataStoreHandler
 {
-   private NBTTagCompound data;
    private File saveFile = null;
+   private Map<INBTStorageClass, String> storageClasses;
    
-   public DataStore()
+   public DataStoreHandler()
    {
       MinecraftForge.EVENT_BUS.register(this);
+      storageClasses = new HashMap<INBTStorageClass, String>();
+   }
+   
+   public void addStorageClass( INBTStorageClass theClass, String tagName )
+   {
+      storageClasses.put(theClass, tagName);
    }
    
    private void getDataFile()
@@ -76,14 +87,21 @@ public class DataStore
          FileOutputStream fileOutputStream = null;
          try
          {
-            fileOutputStream = new FileOutputStream( saveFile );
-            CompressedStreamTools.writeCompressed(data, fileOutputStream );
+            NBTTagCompound globalNbt = new NBTTagCompound();
+            Iterator iter = storageClasses.keySet().iterator();
+            while (iter.hasNext()) 
+            {
+               NBTTagCompound classNbt = new NBTTagCompound();
+               INBTStorageClass theClass = (INBTStorageClass)iter.next();
+               theClass.writeToNBT(classNbt);
+               globalNbt.setTag(storageClasses.get(theClass), classNbt);
+            }
+            CompressedStreamTools.writeCompressed(globalNbt, fileOutputStream );
             HardcoreWither.logger.debug("Saved data" );
          }
          catch( Throwable e )
          {
-            data = new NBTTagCompound();
-            HardcoreWither.logger.error("Error saving data" );
+            HardcoreWither.logger.error("Error saving data: " + e.getLocalizedMessage());
          }
       }
    }
@@ -121,37 +139,19 @@ public class DataStore
          try
          {
             fileInputStream = new FileInputStream( saveFile );
-            data = CompressedStreamTools.readCompressed( fileInputStream );
+            NBTTagCompound globalNbt = CompressedStreamTools.readCompressed( fileInputStream );
+            Iterator iter = storageClasses.keySet().iterator();
+            while (iter.hasNext()) 
+            {
+               INBTStorageClass theClass = (INBTStorageClass)iter.next();
+               theClass.readFromNBT(globalNbt.getCompoundTag(storageClasses.get(theClass)));
+            }
             HardcoreWither.logger.debug("Data loaded" );
          }
          catch( Throwable e )
          {
-            data = new NBTTagCompound();
-            HardcoreWither.logger.error("Error loading data" );
+            HardcoreWither.logger.error("Error loading data" + e.getLocalizedMessage());
          }
       }
    }
-   
-   public NBTTagCompound getWitherData()
-   {
-      return data.getCompoundTag("WitherData");
-   }
-   
-   public NBTTagCompound getWitherData(UUID id)
-   {
-      NBTTagCompound playerData = data.getCompoundTag("WitherData");
-      return playerData.getCompoundTag(id.toString());
-   } 
-   
-   public NBTTagCompound getPlayerData()
-   {
-      return data.getCompoundTag("PlayerData");
-   }
-   
-   public NBTTagCompound getPlayerData(UUID id)
-   {
-      NBTTagCompound playerData = data.getCompoundTag("PlayerData");
-      return playerData.getCompoundTag(id.toString());
-   }
-   
 }
