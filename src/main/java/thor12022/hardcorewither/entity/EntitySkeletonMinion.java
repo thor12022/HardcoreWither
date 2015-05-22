@@ -38,4 +38,9 @@ public class EntitySkeletonMinion extends EntitySkeleton
    @Override
    protected void dropFewItems(boolean p_70628_1_, int p_70628_2_)
    {}
+   
+   protected boolean isValidLightLevel()
+   {
+       return true;
+   }
 }
