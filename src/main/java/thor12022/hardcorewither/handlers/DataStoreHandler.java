@@ -84,9 +84,9 @@ public class DataStoreHandler
       }
       else
       {
-         FileOutputStream fileOutputStream = null;
          try
          {
+            FileOutputStream fileOutputStream = new FileOutputStream(saveFile);
             NBTTagCompound globalNbt = new NBTTagCompound();
             Iterator iter = storageClasses.keySet().iterator();
             while (iter.hasNext()) 

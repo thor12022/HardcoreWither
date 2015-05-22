@@ -28,7 +28,6 @@ public class PlayerHandler implements INBTStorageClass
       playerXp = new HashMap<UUID, Double>();
    }
    
-   //! @todo this event also get triggered when loading chunks/the world, use something else
    @SubscribeEvent
    public void onSpawnMob(EntityJoinWorldEvent event)
    {
@@ -36,11 +35,15 @@ public class PlayerHandler implements INBTStorageClass
       if (event.entity != null && event.entity.getClass() == EntityWither.class)
       {
          EntityWither theWither = (EntityWither)event.entity;
-         List nearbyPlayers = theWither.worldObj.getEntitiesWithinAABB(EntityPlayer.class, theWither.boundingBox.expand(64.0D, 64.0D, 64.0D));
-         for (int index = 0; index < nearbyPlayers.size(); ++index)
+         // only when the Wither is charging up (to prevent some triggering with chunk reload)
+         if( theWither.func_82212_n() > 0 )
          {
-            EntityPlayer player = (EntityPlayer)nearbyPlayers.get(index);
-            addWitherExperience(player, 1.0);
+            List nearbyPlayers = theWither.worldObj.getEntitiesWithinAABB(EntityPlayer.class, theWither.boundingBox.expand(64.0D, 64.0D, 64.0D));
+            for (int index = 0; index < nearbyPlayers.size(); ++index)
+            {
+               EntityPlayer player = (EntityPlayer)nearbyPlayers.get(index);
+               addWitherExperience(player, 1.0);
+            }
          }
       }
    }
