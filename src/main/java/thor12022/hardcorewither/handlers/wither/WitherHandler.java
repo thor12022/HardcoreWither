@@ -1,6 +1,10 @@
 package thor12022.hardcorewither.handlers.wither;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -14,39 +18,57 @@ import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
 import net.minecraftforge.event.entity.living.LivingSpawnEvent;
 import thor12022.hardcorewither.ConfigHandler;
 import thor12022.hardcorewither.HardcoreWither;
+import thor12022.hardcorewither.powerUps.IPowerUp;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.registry.GameRegistry;
 
 public class WitherHandler
 {
-   private Map<UUID, WitherMinionSpawner> witherSpawnerMap ;
+   private static Map<UUID, List<IPowerUp>> usedPowerUps = new HashMap<UUID, List<IPowerUp>>();
+   private static List<IPowerUp> powerUps = new ArrayList<IPowerUp>();
+   
+   public void registerPowerUp( IPowerUp powerUp)
+   {
+      powerUps.add(powerUp);
+   }
+
+   private IPowerUp getPowerUp( EntityWither ownerWither)
+   {
+      IPowerUp powerUp = powerUps.get((int)Math.round(Math.random()* (powerUps.size() - 1))).createPowerUp(ownerWither);
+      if(!usedPowerUps.containsKey(ownerWither.getUniqueID()))
+      {
+         usedPowerUps.put( ownerWither.getUniqueID(), new LinkedList<IPowerUp>());
+      }
+      usedPowerUps.get(ownerWither.getUniqueID()).add(powerUp);
+      return powerUp;
+   }
 
    public WitherHandler()
    {
-      witherSpawnerMap = new HashMap<UUID, WitherMinionSpawner>();
       MinecraftForge.EVENT_BUS.register(this);
    }
    
-   private void AttachSpawner(EntityWither wither)
-   {
-      HardcoreWither.logger.debug("Attaching Minion Spawner to Wither");
-      WitherMinionSpawner minionSpawner = new WitherMinionSpawner(wither);
-      witherSpawnerMap.put(wither.getUniqueID(), minionSpawner);
-   }
-   
+
    @SubscribeEvent
    public void onLivingUpdate(LivingUpdateEvent event)
    {
       if (event.entityLiving != null && event.entityLiving.getClass() == EntityWither.class)
       {
-         try
+         if(usedPowerUps.containsKey(event.entityLiving.getUniqueID()))
          {
-            witherSpawnerMap.get(event.entityLiving.getUniqueID()).updateSpawner();
+            Iterator iter = usedPowerUps.get(event.entityLiving.getUniqueID()).iterator();
+            if(iter.hasNext())
+            {
+               for(IPowerUp powerUp = (IPowerUp)iter.next(); iter.hasNext(); powerUp = (IPowerUp)iter.next() )
+               {
+                  powerUp.updateWither();
+               }
+            }
          }
-         catch( NullPointerException e)
+         else
          {
-            AttachSpawner((EntityWither)event.entityLiving);
+            getPowerUp( (EntityWither)event.entityLiving);
          }
       }
    }
@@ -56,7 +78,7 @@ public class WitherHandler
    {
       if (event.entityLiving != null && event.entityLiving.getClass() == EntityWither.class)
       {
-         AttachSpawner((EntityWither)event.entityLiving);
+         getPowerUp( (EntityWither)event.entityLiving);
       }
    }
 }

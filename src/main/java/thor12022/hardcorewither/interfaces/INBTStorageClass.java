@@ -1,4 +1,4 @@
-package thor12022.hardcorewither;
+package thor12022.hardcorewither.interfaces;
 
 import net.minecraft.nbt.NBTTagCompound;
 

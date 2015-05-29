@@ -11,8 +11,8 @@ import java.util.Set;
 import java.util.UUID;
 
 import thor12022.hardcorewither.HardcoreWither;
-import thor12022.hardcorewither.INBTStorageClass;
 import thor12022.hardcorewither.ModInformation;
+import thor12022.hardcorewither.interfaces.INBTStorageClass;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import net.minecraft.nbt.CompressedStreamTools;
