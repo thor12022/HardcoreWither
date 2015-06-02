@@ -14,6 +14,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
+import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
 import net.minecraftforge.event.entity.player.PlayerUseItemEvent;
 import cpw.mods.fml.client.event.ConfigChangedEvent;
@@ -76,6 +77,15 @@ public class EventHandler
       if (event.entityLiving != null && event.entityLiving.getClass() == EntityWither.class)
       {
          powerUpManager.update((EntityWither) event.entityLiving);
+      }
+   }
+   
+   @SubscribeEvent
+   public void onEntityDieing(LivingDeathEvent event)
+   {
+      if (event.entityLiving != null && event.entityLiving.getClass() == EntityWither.class)
+      {
+         powerUpManager.witherDied((EntityWither) event.entityLiving);
       }
    }
 }

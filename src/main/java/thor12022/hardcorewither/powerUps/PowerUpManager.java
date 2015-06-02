@@ -117,4 +117,25 @@ public class PowerUpManager
          }
       }
    }  
+   
+   public void witherDied(EntityWither wither)
+   {
+      if(!usedPowerUps.containsKey(wither.getUniqueID()))
+      {
+
+      }
+      else
+      {
+         // Iterate through the powerups for this Wither
+         Iterator iter = usedPowerUps.get(wither.getUniqueID()).values().iterator();
+         while(iter.hasNext())
+         {
+            IPowerUp powerUp = (IPowerUp)iter.next();
+            {
+               powerUp.witherDied();
+            }
+         }
+         usedPowerUps.remove(wither.getUniqueID());
+      }
+   }  
 }

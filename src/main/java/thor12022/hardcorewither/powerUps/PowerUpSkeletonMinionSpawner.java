@@ -58,4 +58,10 @@ class PowerUpSkeletonMinionSpawner extends AbstractPowerUp
    {
       
    }
+
+   @Override
+   public void witherDied()
+   {
+
+   }
 };

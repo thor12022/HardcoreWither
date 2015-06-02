@@ -58,4 +58,10 @@ class PowerUpGhastMinionSpawner extends AbstractPowerUp
    {
       
    }
+
+   @Override
+   public void witherDied()
+   {
+
+   }
 };
