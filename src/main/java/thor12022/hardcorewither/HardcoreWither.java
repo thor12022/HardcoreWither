@@ -26,10 +26,10 @@ import thor12022.hardcorewither.items.ItemRegistry;
 import thor12022.hardcorewither.handlers.DataStoreHandler;
 import thor12022.hardcorewither.handlers.PlayerHandler;
 import thor12022.hardcorewither.handlers.TinkersConstructHandler;
-import thor12022.hardcorewither.handlers.wither.WitherHandler;
 import thor12022.hardcorewither.potions.PotionRegistry;
+import thor12022.hardcorewither.powerUps.PowerUpManager;
 import thor12022.hardcorewither.proxies.CommonProxy;
-import thor12022.hardcorewither.util.EventHandler;
+import thor12022.hardcorewither.EventHandler;
 import thor12022.hardcorewither.util.OreDictHandler;
 import thor12022.hardcorewither.util.TextHelper;
 import net.minecraft.creativetab.CreativeTabs;
@@ -58,15 +58,17 @@ public class HardcoreWither
    @Mod.Instance
    public   static HardcoreWither   instance;
 
-   private  WitherHandler    witherHandler;
-   private  PlayerHandler    playerHandler;
-   private  DataStoreHandler dataStore;
+   private  PowerUpManager    powerUpManager;
+   private  PlayerHandler     playerHandler;
+   private  DataStoreHandler  dataStore;
+   private  EventHandler      eventHandler;
    
    public HardcoreWither()
    {
-      witherHandler  =  new WitherHandler();
+      powerUpManager =  new PowerUpManager();
       playerHandler  =  new PlayerHandler();
       dataStore      =  new DataStoreHandler();
+      eventHandler   =  new EventHandler(playerHandler, powerUpManager);
       
       dataStore.addStorageClass(playerHandler, "PlayerHandler");
    }
@@ -84,7 +86,7 @@ public class HardcoreWither
       EntityRegistry.register();
 
       OreDictHandler.registerOreDict();
-      FMLCommonHandler.instance().bus().register(new EventHandler());
+      FMLCommonHandler.instance().bus().register(eventHandler);
       NetworkRegistry.INSTANCE.registerGuiHandler(instance, new GuiHandler());
    }
 

@@ -1,4 +1,4 @@
-package thor12022.hardcorewither.handlers.wither;
+package thor12022.hardcorewither.powerUps;
 
 import java.util.Map;
 
