@@ -46,7 +46,20 @@ public abstract class AbstractPowerUpMinionSpawner extends AbstractPowerUp
       }
    }
 
+   protected class SpawnerData
+   {
+      public String  entityLocalizedName = "Pig";  //!< Mod Localized name of Entity
+      public int     delay = 20;                   //!< 0-255
+      public int     playerRange = 16;             //!< 0-255
+      public int     maxEntities = 6;              //!< 0-255
+      public int     minDelay = 200;               //!< 0-255
+      public int     MaxDelay = 255;               //!< 0-255
+      public int     spawnCount = 4;               //!< 0-255
+      public int     spawnRange = 4;               //!< 0-255
+   }
+
    private final WitherMinionSpawner spawner;
+   protected SpawnerData spawnerData;
    
    public AbstractPowerUpMinionSpawner()
    {
@@ -58,15 +71,22 @@ public abstract class AbstractPowerUpMinionSpawner extends AbstractPowerUp
    {
       super(theOwnerWither);
       spawner = new WitherMinionSpawner(ownerWither);
+      spawnerData = new SpawnerData();
+      spawnerData.entityLocalizedName = entityLocalizedName;
+      ResetSpawnerToData();
+   }
+
+   protected void ResetSpawnerToData()
+   {
       NBTTagCompound nbt = new NBTTagCompound();
-      nbt.setString("EntityId", entityLocalizedName);
-      nbt.setShort("Delay", (short)10);
-      nbt.setShort("RequiredPlayerRange", (short)64);
-      nbt.setShort("MaxNearbyEntities", (short)128);
-      nbt.setShort("MinSpawnDelay", (short)10);
-      nbt.setShort("MaxSpawnDelay", (short)30);
-      nbt.setShort("SpawnCount", (short)4);
-      nbt.setShort("SpawnRange", (short)16);
+      nbt.setString("EntityId", spawnerData.entityLocalizedName);
+      nbt.setShort("Delay", (short)spawnerData.delay);
+      nbt.setShort("RequiredPlayerRange", (short)spawnerData.playerRange);
+      nbt.setShort("MaxNearbyEntities", (short)spawnerData.maxEntities);
+      nbt.setShort("MinSpawnDelay", (short)spawnerData.minDelay);
+      nbt.setShort("MaxSpawnDelay", (short)spawnerData.MaxDelay);
+      nbt.setShort("SpawnCount", (short)spawnerData.spawnCount);
+      nbt.setShort("SpawnRange", (short)spawnerData.spawnRange);
       spawner.readFromNBT(nbt);
    }
    

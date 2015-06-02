@@ -5,8 +5,6 @@ import thor12022.hardcorewither.entity.EntityGhastMinion;
 
 class PowerUpGhastMinionSpawner extends AbstractPowerUpMinionSpawner
 {
-   
-   
    protected PowerUpGhastMinionSpawner()
    {
       super();
