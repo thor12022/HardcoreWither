@@ -30,7 +30,6 @@ import thor12022.hardcorewither.potions.PotionRegistry;
 import thor12022.hardcorewither.powerUps.PowerUpManager;
 import thor12022.hardcorewither.proxies.CommonProxy;
 import thor12022.hardcorewither.EventHandler;
-import thor12022.hardcorewither.util.OreDictHandler;
 import thor12022.hardcorewither.util.TextHelper;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EnumCreatureType;
@@ -84,8 +83,7 @@ public class HardcoreWither
       BlockRegistry.registerBlocks();
       PotionRegistry.registerPotions();
       EntityRegistry.register();
-
-      OreDictHandler.registerOreDict();
+      
       FMLCommonHandler.instance().bus().register(eventHandler);
       NetworkRegistry.INSTANCE.registerGuiHandler(instance, new GuiHandler());
    }
