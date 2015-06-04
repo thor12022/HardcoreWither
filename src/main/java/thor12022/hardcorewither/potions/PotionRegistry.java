@@ -2,22 +2,31 @@ package thor12022.hardcorewither.potions;
 
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import thor12022.hardcorewither.config.ConfigManager;
+import thor12022.hardcorewither.config.IConfigClass;
 import thor12022.hardcorewither.HardcoreWither;
 import net.minecraft.potion.Potion;
+import net.minecraftforge.common.config.Configuration;
 
-public class PotionRegistry
+public class PotionRegistry implements IConfigClass
 {
-   public static Potion potionAntiWither;
    
+   public static Potion potionAntiWither;
+
+   private static int antiWitherPotionId = 30;
+
    public static void registerPotions()
    {
-      if(ConfigManager.antiWitherPotionId == -1)
+      // the only reason to have a non-static members/methods is for the Config, 
+      //    so we'll just give 'em a kinda-proxy-like instance
+      ConfigManager.getInstance().addConfigClass(new PotionRegistry());
+      
+      if(antiWitherPotionId == -1)
       {
-         ConfigManager.antiWitherPotionId = NextPotionId();
+         antiWitherPotionId = NextPotionId();
       }
       
-      HardcoreWither.logger.debug("Assigning Potion ID " + ConfigManager.antiWitherPotionId + " to Anti-Wither");
-      potionAntiWither = new PotionAntiWither(ConfigManager.antiWitherPotionId).setPotionName("potion.antiWither");
+      HardcoreWither.logger.debug("Assigning Potion ID " + antiWitherPotionId + " to Anti-Wither");
+      potionAntiWither = new PotionAntiWither(antiWitherPotionId).setPotionName("potion.antiWither");
    }
 
    private static int NextPotionId()
@@ -30,5 +39,17 @@ public class PotionRegistry
          }
       }
       return -1;
+   }
+
+   @Override
+   public String getSectionName()
+   {
+      return "Potions";
+   }
+
+   @Override
+   public void syncConfig(Configuration config)
+   {
+      antiWitherPotionId = config.getInt("Anti-Wither Potion ID", getSectionName(), antiWitherPotionId, 24, Potion.potionTypes.length-1, "Set to -1 to attempt an auto-assignment (experimental)");
    }
 }

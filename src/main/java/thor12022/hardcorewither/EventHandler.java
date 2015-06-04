@@ -41,9 +41,10 @@ public class EventHandler
    @SubscribeEvent
    public void onConfigChanged(ConfigChangedEvent.OnConfigChangedEvent eventArgs)
    {
+      //! @todo pretty sure this event is invalid if there are multiple config files
       if(eventArgs.modID.equals(ModInformation.ID))
       {
-         ConfigManager.syncConfig();
+         ConfigManager.getInstance().syncConfig();
          HardcoreWither.logger.info(TextHelper.localize("info." + ModInformation.ID + ".console.config.refresh"));
       }
    }

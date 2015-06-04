@@ -10,6 +10,7 @@ import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.registry.GameRegistry;
 import thor12022.hardcorewither.config.ConfigManager;
+import thor12022.hardcorewither.config.IConfigClass;
 import thor12022.hardcorewither.HardcoreWither;
 import thor12022.hardcorewither.ModInformation;
 import thor12022.hardcorewither.potions.PotionAntiWither;
@@ -24,20 +25,26 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.event.entity.living.LivingDropsEvent;
 
-public class TinkersConstructHandler
+public class TinkersConstructHandler implements IConfigClass
 {
    private static TinkersConstructHandler eventHandler = new TinkersConstructHandler();
+   
+   private static boolean enableGreenHeartCanister = true;
+   private static boolean enableGreenHeartWitherDrop = true;
+   private static int greenHeartDropRarity = 2;
    
    private TinkersConstructHandler()
    {
       MinecraftForge.EVENT_BUS.register(this);
+      ConfigManager.getInstance().addConfigClass(this);
    }
    
    public static void init(FMLInitializationEvent event)
    {
-      if(ConfigManager.enableGreenHeartCanister)
+      if(enableGreenHeartCanister)
       {
          GameRegistry.addShapelessRecipe( new ItemStack(TinkerArmor.heartCanister, 1, 6), 
                                           new ItemStack(TinkerArmor.heartCanister, 1, 4), 
@@ -49,7 +56,7 @@ public class TinkersConstructHandler
    @SubscribeEvent
    public void onLivingDrop (LivingDropsEvent event)
    {
-       if (!ConfigManager.enableGreenHeartWitherDrop || !event.recentlyHit)
+       if (!enableGreenHeartWitherDrop || !event.recentlyHit)
        {
           return;
        }
@@ -72,7 +79,7 @@ public class TinkersConstructHandler
                    int numberOfHearts = 0;
                    for( int lootingLevel = event.lootingLevel; lootingLevel > 0; --lootingLevel)
                    {
-                      numberOfHearts += rand.nextInt(ConfigManager.greenHeartDropRarity) == 0 ? 1 : 0;
+                      numberOfHearts += rand.nextInt(greenHeartDropRarity) == 0 ? 1 : 0;
                    }
                    ItemHelper.addDrops(event, new ItemStack(TinkerArmor.heartCanister, numberOfHearts, 5));
                    HardcoreWither.logger.debug("Withered Anti-Withered Player killed Wither, dropping Miniture" + numberOfHearts + " Green Hearts");
@@ -82,4 +89,19 @@ public class TinkersConstructHandler
           }
        }
     }
+
+   @Override
+   public void syncConfig(Configuration config)
+   {
+      enableGreenHeartCanister = config.getBoolean("Enable Green Heart Canister Crafting",getSectionName(), enableGreenHeartCanister, "Requires Tinkers' Construct");
+      enableGreenHeartWitherDrop = config.getBoolean("Enable Withers Dropping Green Hearts",getSectionName(), enableGreenHeartWitherDrop, "Requires Tinkers' Construct");
+      greenHeartDropRarity = config.getInt("Green Heart Drop Rarity", getSectionName(), greenHeartDropRarity, 0, Integer.MAX_VALUE, "How rare the Green Heart drop is, 0 is a guarnenteed 1 per level of fortune");
+      
+   }
+
+   @Override
+   public String getSectionName()
+   {
+      return "TinkersConstruct";
+   }
 }

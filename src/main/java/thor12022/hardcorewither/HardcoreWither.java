@@ -6,6 +6,8 @@ package thor12022.hardcorewither;
  */
 
 //import biomesoplenty.api.content.BOPCBiomes;
+import java.io.File;
+
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.Mod;
@@ -47,7 +49,6 @@ import scala.Array;
 @Mod(modid = ModInformation.ID, name = ModInformation.NAME, version = ModInformation.VERSION, dependencies = ModInformation.DEPEND)
 public class HardcoreWither
 {
-
    @SidedProxy(clientSide = ModInformation.CLIENTPROXY, serverSide = ModInformation.COMMONPROXY)
    public static CommonProxy proxy;
 
@@ -76,8 +77,8 @@ public class HardcoreWither
    public void preInit(FMLPreInitializationEvent event)
    {
       logger.info(TextHelper.localize("info." + ModInformation.ID + ".console.load.preInit"));
-
-      ConfigManager.init(event.getSuggestedConfigurationFile());
+      
+      ConfigManager.getInstance().init(event.getModConfigurationDirectory());
 
       ItemRegistry.registerItems();
       BlockRegistry.registerBlocks();

@@ -26,7 +26,7 @@ public class ItemRecipeRegistry
       // ItemStack(Items.blaze_rod), new Object[]{"X  ", " X ", "  X", 'X',
       // "powderBlaze"}));  
      
-      if(ConfigManager.enableStarryApple)
+      if(ItemRegistry.starryApple != null)
       {
          GameRegistry.addShapedRecipe(new ItemStack(ItemRegistry.starryApple), new Object[]{
             " s ", 

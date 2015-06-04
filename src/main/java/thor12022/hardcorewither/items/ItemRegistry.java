@@ -8,33 +8,44 @@ package thor12022.hardcorewither.items;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 import thor12022.hardcorewither.config.ConfigManager;
+import thor12022.hardcorewither.config.IConfigClass;
 import thor12022.hardcorewither.ModInformation;
 import net.minecraft.item.Item;
 import net.minecraft.item.Item.ToolMaterial;
+import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.common.util.EnumHelper;
 
-public class ItemRegistry
+public class ItemRegistry implements IConfigClass
 {
-
    // items
    // public static Item exampleItem;
    public static Item starryApple;
-   
-   
-   // I use multiple sections here to sort things. It's just my system, you
-   // don't have to.
-   // Just delete "registerItemSet2" and "registerAllItems" then make this
-   // public. Make sure to change the call in the main class.
+
+   private static boolean enableStarryApple = true;
 
    public static void registerItems()
    {
-      // exampleItem = new ItemExample();
-      // GameRegistry.registerItem(exampleItem, "ItemExample");
-      
+      // the only reason to have a non-static members/methods is for the Config, 
+      //    so we'll just give 'em a kinda-proxy-like instance
+      ConfigManager.getInstance().addConfigClass(new ItemRegistry());
+
       starryApple = new ItemStarryApple();
-      if(ConfigManager.enableStarryApple)
+      if(enableStarryApple)
       {
          GameRegistry.registerItem(starryApple, "StarryApple");
       }
+   }
+
+
+   @Override
+   public String getSectionName()
+   {
+      return "ItemRegistry";
+   }
+
+   @Override
+   public void syncConfig(Configuration config)
+   {
+      enableStarryApple = config.getBoolean("Enable Starry Apple",getSectionName(), enableStarryApple, "");
    }
 }
