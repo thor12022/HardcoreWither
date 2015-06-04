@@ -19,7 +19,7 @@ import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
 import net.minecraftforge.event.entity.player.PlayerUseItemEvent;
 import cpw.mods.fml.client.event.ConfigChangedEvent;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import thor12022.hardcorewither.ConfigManager;
+import thor12022.hardcorewither.config.ConfigManager;
 import thor12022.hardcorewither.HardcoreWither;
 import thor12022.hardcorewither.ModInformation;
 import thor12022.hardcorewither.handlers.PlayerHandler;

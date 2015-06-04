@@ -20,6 +20,7 @@ import thor12022.hardcorewither.blocks.BlockRecipeRegistry;
 import thor12022.hardcorewither.blocks.BlockRegistry;
 import thor12022.hardcorewither.client.gui.CreativeTabBaseMod;
 import thor12022.hardcorewither.client.gui.GuiHandler;
+import thor12022.hardcorewither.config.ConfigManager;
 import thor12022.hardcorewither.entity.EntityRegistry;
 import thor12022.hardcorewither.items.ItemRecipeRegistry;
 import thor12022.hardcorewither.items.ItemRegistry;
@@ -65,7 +66,7 @@ public class HardcoreWither
    {
       powerUpManager =  new PowerUpManager();
       playerHandler  =  new PlayerHandler();
-      dataStore      =  new DataStoreManager();
+      dataStore      =  DataStoreManager.getInstance();
       eventHandler   =  new EventHandler(playerHandler, powerUpManager);
       
       dataStore.addStorageClass(playerHandler, "PlayerHandler");

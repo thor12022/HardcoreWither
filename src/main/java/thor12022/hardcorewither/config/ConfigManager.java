@@ -1,4 +1,4 @@
-package thor12022.hardcorewither;
+package thor12022.hardcorewither.config;
 
 /*
  * Creation and usage of the config file.

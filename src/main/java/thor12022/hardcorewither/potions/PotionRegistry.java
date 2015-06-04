@@ -1,7 +1,7 @@
 package thor12022.hardcorewither.potions;
 
 import cpw.mods.fml.common.event.FMLInitializationEvent;
-import thor12022.hardcorewither.ConfigManager;
+import thor12022.hardcorewither.config.ConfigManager;
 import thor12022.hardcorewither.HardcoreWither;
 import net.minecraft.potion.Potion;
 

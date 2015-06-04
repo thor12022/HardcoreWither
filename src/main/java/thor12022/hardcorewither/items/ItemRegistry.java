@@ -7,7 +7,7 @@ package thor12022.hardcorewither.items;
  */
 
 import cpw.mods.fml.common.registry.GameRegistry;
-import thor12022.hardcorewither.ConfigManager;
+import thor12022.hardcorewither.config.ConfigManager;
 import thor12022.hardcorewither.ModInformation;
 import net.minecraft.item.Item;
 import net.minecraft.item.Item.ToolMaterial;

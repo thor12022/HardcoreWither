@@ -26,10 +26,17 @@ import net.minecraftforge.event.world.WorldEvent.Unload;
 
 public class DataStoreManager
 {
+   private static DataStoreManager instance = new DataStoreManager();
+   
+   static public DataStoreManager getInstance()
+   {
+      return instance;
+   }
+   
    private File saveFile = null;
    private Map<INBTStorageClass, String> storageClasses;
    
-   public DataStoreManager()
+   private DataStoreManager()
    {
       MinecraftForge.EVENT_BUS.register(this);
       storageClasses = new HashMap<INBTStorageClass, String>();

@@ -9,7 +9,7 @@ import tconstruct.util.ItemHelper;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.registry.GameRegistry;
-import thor12022.hardcorewither.ConfigManager;
+import thor12022.hardcorewither.config.ConfigManager;
 import thor12022.hardcorewither.HardcoreWither;
 import thor12022.hardcorewither.ModInformation;
 import thor12022.hardcorewither.potions.PotionAntiWither;
