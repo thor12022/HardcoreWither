@@ -19,10 +19,9 @@ import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
 import net.minecraftforge.event.entity.player.PlayerUseItemEvent;
 import cpw.mods.fml.client.event.ConfigChangedEvent;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import thor12022.hardcorewither.ConfigHandler;
+import thor12022.hardcorewither.ConfigManager;
 import thor12022.hardcorewither.HardcoreWither;
 import thor12022.hardcorewither.ModInformation;
-import thor12022.hardcorewither.handlers.DataStoreHandler;
 import thor12022.hardcorewither.handlers.PlayerHandler;
 import thor12022.hardcorewither.powerUps.PowerUpManager;
 import thor12022.hardcorewither.util.TextHelper;
@@ -44,7 +43,7 @@ public class EventHandler
    {
       if(eventArgs.modID.equals(ModInformation.ID))
       {
-         ConfigHandler.syncConfig();
+         ConfigManager.syncConfig();
          HardcoreWither.logger.info(TextHelper.localize("info." + ModInformation.ID + ".console.config.refresh"));
       }
    }

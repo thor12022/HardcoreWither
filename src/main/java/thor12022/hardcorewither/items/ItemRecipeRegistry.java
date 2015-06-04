@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import cpw.mods.fml.common.registry.GameRegistry;
-import thor12022.hardcorewither.ConfigHandler;
+import thor12022.hardcorewither.ConfigManager;
 import thor12022.hardcorewither.HardcoreWither;
 import thor12022.hardcorewither.blocks.BlockRegistry;
 import net.minecraft.init.Items;
@@ -26,7 +26,7 @@ public class ItemRecipeRegistry
       // ItemStack(Items.blaze_rod), new Object[]{"X  ", " X ", "  X", 'X',
       // "powderBlaze"}));  
      
-      if(ConfigHandler.enableStarryApple)
+      if(ConfigManager.enableStarryApple)
       {
          GameRegistry.addShapedRecipe(new ItemStack(ItemRegistry.starryApple), new Object[]{
             " s ", 

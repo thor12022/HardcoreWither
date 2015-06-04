@@ -7,7 +7,7 @@ package thor12022.hardcorewither.items;
  */
 
 import cpw.mods.fml.common.registry.GameRegistry;
-import thor12022.hardcorewither.ConfigHandler;
+import thor12022.hardcorewither.ConfigManager;
 import thor12022.hardcorewither.ModInformation;
 import net.minecraft.item.Item;
 import net.minecraft.item.Item.ToolMaterial;
@@ -32,7 +32,7 @@ public class ItemRegistry
       // GameRegistry.registerItem(exampleItem, "ItemExample");
       
       starryApple = new ItemStarryApple();
-      if(ConfigHandler.enableStarryApple)
+      if(ConfigManager.enableStarryApple)
       {
          GameRegistry.registerItem(starryApple, "StarryApple");
       }

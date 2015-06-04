@@ -1,4 +1,4 @@
-package thor12022.hardcorewither.handlers;
+package thor12022.hardcorewither;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -24,12 +24,12 @@ import net.minecraftforge.event.world.WorldEvent.Load;
 import net.minecraftforge.event.world.WorldEvent.Save;
 import net.minecraftforge.event.world.WorldEvent.Unload;
 
-public class DataStoreHandler
+public class DataStoreManager
 {
    private File saveFile = null;
    private Map<INBTStorageClass, String> storageClasses;
    
-   public DataStoreHandler()
+   public DataStoreManager()
    {
       MinecraftForge.EVENT_BUS.register(this);
       storageClasses = new HashMap<INBTStorageClass, String>();

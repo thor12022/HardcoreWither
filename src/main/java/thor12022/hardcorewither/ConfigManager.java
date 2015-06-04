@@ -9,7 +9,7 @@ import net.minecraftforge.common.config.Configuration;
 
 import java.io.File;
 
-public class ConfigHandler
+public class ConfigManager
 {
 
    public static Configuration config;

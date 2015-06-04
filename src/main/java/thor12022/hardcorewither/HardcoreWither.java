@@ -23,7 +23,6 @@ import thor12022.hardcorewither.client.gui.GuiHandler;
 import thor12022.hardcorewither.entity.EntityRegistry;
 import thor12022.hardcorewither.items.ItemRecipeRegistry;
 import thor12022.hardcorewither.items.ItemRegistry;
-import thor12022.hardcorewither.handlers.DataStoreHandler;
 import thor12022.hardcorewither.handlers.PlayerHandler;
 import thor12022.hardcorewither.handlers.TinkersConstructHandler;
 import thor12022.hardcorewither.potions.PotionRegistry;
@@ -59,14 +58,14 @@ public class HardcoreWither
 
    private  PowerUpManager    powerUpManager;
    private  PlayerHandler     playerHandler;
-   private  DataStoreHandler  dataStore;
+   private  DataStoreManager  dataStore;
    private  EventHandler      eventHandler;
    
    public HardcoreWither()
    {
       powerUpManager =  new PowerUpManager();
       playerHandler  =  new PlayerHandler();
-      dataStore      =  new DataStoreHandler();
+      dataStore      =  new DataStoreManager();
       eventHandler   =  new EventHandler(playerHandler, powerUpManager);
       
       dataStore.addStorageClass(playerHandler, "PlayerHandler");
@@ -77,7 +76,7 @@ public class HardcoreWither
    {
       logger.info(TextHelper.localize("info." + ModInformation.ID + ".console.load.preInit"));
 
-      ConfigHandler.init(event.getSuggestedConfigurationFile());
+      ConfigManager.init(event.getSuggestedConfigurationFile());
 
       ItemRegistry.registerItems();
       BlockRegistry.registerBlocks();

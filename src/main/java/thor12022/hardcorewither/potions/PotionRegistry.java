@@ -1,7 +1,7 @@
 package thor12022.hardcorewither.potions;
 
 import cpw.mods.fml.common.event.FMLInitializationEvent;
-import thor12022.hardcorewither.ConfigHandler;
+import thor12022.hardcorewither.ConfigManager;
 import thor12022.hardcorewither.HardcoreWither;
 import net.minecraft.potion.Potion;
 
@@ -11,13 +11,13 @@ public class PotionRegistry
    
    public static void registerPotions()
    {
-      if(ConfigHandler.antiWitherPotionId == -1)
+      if(ConfigManager.antiWitherPotionId == -1)
       {
-         ConfigHandler.antiWitherPotionId = NextPotionId();
+         ConfigManager.antiWitherPotionId = NextPotionId();
       }
       
-      HardcoreWither.logger.debug("Assigning Potion ID " + ConfigHandler.antiWitherPotionId + " to Anti-Wither");
-      potionAntiWither = new PotionAntiWither(ConfigHandler.antiWitherPotionId).setPotionName("potion.antiWither");
+      HardcoreWither.logger.debug("Assigning Potion ID " + ConfigManager.antiWitherPotionId + " to Anti-Wither");
+      potionAntiWither = new PotionAntiWither(ConfigManager.antiWitherPotionId).setPotionName("potion.antiWither");
    }
 
    private static int NextPotionId()
