@@ -25,4 +25,10 @@ class PowerUpSkeletonMinionSpawner extends AbstractPowerUpMinionSpawner
    @Override
    public void witherDied()
    {}
+
+   @Override
+   public String getSectionName()
+   {
+      return "PowerUpSkeletonMinionSpawner";
+   }
 };
