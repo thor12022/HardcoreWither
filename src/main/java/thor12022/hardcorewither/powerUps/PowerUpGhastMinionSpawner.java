@@ -23,6 +23,15 @@ class PowerUpGhastMinionSpawner extends AbstractPowerUpMinionSpawner
    }
 
    @Override
+   public void updateWither()
+   {
+      if(ownerWither.func_82212_n() <= 0 && !ownerWither.isArmored())
+      {
+         super.updateWither();
+      }
+   }
+
+   @Override
    public void witherDied()
    {}
 

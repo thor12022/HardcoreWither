@@ -124,10 +124,7 @@ public abstract class AbstractPowerUpMinionSpawner extends AbstractPowerUp imple
    @Override
    public void updateWither()
    {
-      if(ownerWither.func_82212_n() > 0)
-      {
-         spawner.updateSpawner();
-      }
+      spawner.updateSpawner();
    }
 
    @Override

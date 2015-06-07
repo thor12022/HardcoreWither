@@ -21,6 +21,15 @@ class PowerUpBlazeMinionSpawner extends AbstractPowerUpMinionSpawner
       PowerUpBlazeMinionSpawner powerUpBlazeMinionSpawner = new PowerUpBlazeMinionSpawner(theOwnerWither);
       return powerUpBlazeMinionSpawner;
    }
+   
+   @Override
+   public void updateWither()
+   {
+      if(ownerWither.func_82212_n() > 0)
+      {
+         super.updateWither();
+      }
+   }
 
    @Override
    public void witherDied()
