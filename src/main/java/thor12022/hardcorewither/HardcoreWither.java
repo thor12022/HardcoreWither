@@ -80,6 +80,7 @@ public class HardcoreWither
       
       ConfigManager.getInstance().init(event.getModConfigurationDirectory());
 
+      powerUpManager.init();
       ItemRegistry.registerItems();
       BlockRegistry.registerBlocks();
       PotionRegistry.registerPotions();

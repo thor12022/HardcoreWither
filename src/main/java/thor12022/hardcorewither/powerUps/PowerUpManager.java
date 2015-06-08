@@ -24,10 +24,16 @@ public class PowerUpManager
       usedPowerUps = new HashMap<UUID, Map<Class, IPowerUp>>();
       largestPowerUp = 0;
       random = new Random();
-      registerPowerUp(new PowerUpBlazeMinionSpawner());
-      registerPowerUp(new PowerUpGhastMinionSpawner());
-      registerPowerUp(new PowerUpSkeletonMinionSpawner());
       MinecraftForge.EVENT_BUS.register(this);
+   }
+   
+   public void init()
+   {
+      registerPowerUp(new PowerUpBlazeMinionSpawner());
+      registerPowerUp(new PowerUpDeathKnell());
+      registerPowerUp(new PowerUpGhastMinionSpawner());
+      registerPowerUp(new PowerUpHealthBoost());
+      registerPowerUp(new PowerUpSkeletonMinionSpawner());
    }
    
    /**
@@ -55,22 +61,22 @@ public class PowerUpManager
       //! @todo not very efficient here, are we?
       IPowerUp powerUpPrototpe = (IPowerUp) powerUpPrototypes.values().toArray()[random.nextInt(powerUpPrototypes.size())];
       // If we haven't seen this Wither yet
-      if(!usedPowerUps.containsKey(ownerWither))
+      if(!usedPowerUps.containsKey(ownerWither.getUniqueID()))
       {
          usedPowerUps.put(ownerWither.getUniqueID(), new HashMap<Class, IPowerUp>());
       }
-      Set<Class> powerUpsUsed = usedPowerUps.get(ownerWither.getUniqueID()).keySet();
+      Map<Class, IPowerUp> powerUpsUsed = usedPowerUps.get(ownerWither.getUniqueID());
       // If we have used this Power up for this Wither
-      if(powerUpsUsed.contains(powerUpPrototpe.getClass()))
+      if(powerUpsUsed.keySet().contains(powerUpPrototpe.getClass()))
       {
-         IPowerUp powerUp = usedPowerUps.get(ownerWither.getUniqueID()).get(powerUpPrototpe.getClass());
+         IPowerUp powerUp = powerUpsUsed.get(powerUpPrototpe.getClass());
          powerUp.increasePower();
          HardcoreWither.logger.debug("Increasing power of " + powerUpPrototpe.getClass());
       }
       // If this is a new powerup for this Wither
       else
       {
-         usedPowerUps.get(ownerWither.getUniqueID()).put(powerUpPrototpe.getClass(), powerUpPrototpe.createPowerUp(ownerWither));
+         powerUpsUsed.put(powerUpPrototpe.getClass(), powerUpPrototpe.createPowerUp(ownerWither));
          HardcoreWither.logger.debug("Adding " + powerUpPrototpe.getClass());
       }
    }

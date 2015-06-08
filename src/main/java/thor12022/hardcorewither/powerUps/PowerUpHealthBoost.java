@@ -5,6 +5,8 @@ import net.minecraft.entity.boss.EntityWither;
 
 class PowerUpHealthBoost extends AbstractPowerUp
 {
+   private static final float healthBoostMultiplier = 1.1f;
+   
    protected PowerUpHealthBoost()
    {
       super();
@@ -25,7 +27,16 @@ class PowerUpHealthBoost extends AbstractPowerUp
 
    @Override
    public void updateWither()
-   {}
+   {
+      // the Wither's Charging time does not take a different health amount into account
+      if(ownerWither.func_82212_n() > 0)
+      {
+         if (ownerWither.ticksExisted % 10 == 0)
+         {
+            ownerWither.heal( (10.0f * healthBoostMultiplier) - 10 );
+         }
+      }
+   }
 
    @Override
    public void witherDied()
@@ -35,6 +46,6 @@ class PowerUpHealthBoost extends AbstractPowerUp
 	public void increasePower() 
 	{
       double health = ownerWither.getEntityAttribute(SharedMonsterAttributes.maxHealth).getBaseValue();
-      ownerWither.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(health * 1.1D);
+      ownerWither.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(health * healthBoostMultiplier);
 	}
 };
