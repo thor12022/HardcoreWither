@@ -65,11 +65,13 @@ public class PowerUpManager
       {
          IPowerUp powerUp = usedPowerUps.get(ownerWither.getUniqueID()).get(powerUpPrototpe.getClass());
          powerUp.increasePower();
+         HardcoreWither.logger.debug("Increasing power of " + powerUpPrototpe.getClass());
       }
       // If this is a new powerup for this Wither
       else
       {
          usedPowerUps.get(ownerWither.getUniqueID()).put(powerUpPrototpe.getClass(), powerUpPrototpe.createPowerUp(ownerWither));
+         HardcoreWither.logger.debug("Adding " + powerUpPrototpe.getClass());
       }
    }
    /**
