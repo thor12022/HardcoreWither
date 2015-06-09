@@ -8,10 +8,12 @@ import java.util.Set;
 import java.util.UUID;
 
 import net.minecraft.entity.boss.EntityWither;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.MinecraftForge;
 import thor12022.hardcorewither.HardcoreWither;
+import thor12022.hardcorewither.interfaces.INBTStorageClass;
 
-public class PowerUpManager
+public class PowerUpManager implements INBTStorageClass
 {
    private Map<Class, IPowerUp> powerUpPrototypes;
    private Map<UUID, Map<Class, IPowerUp>> usedPowerUps;
@@ -144,6 +146,66 @@ public class PowerUpManager
             }
          }
          usedPowerUps.remove(wither.getUniqueID());
+      }
+   }
+
+   @Override
+   public void writeToNBT(NBTTagCompound nbt)
+   {
+      //! @todo I feel like NBTTagList might be of use here
+      
+      Iterator witherIter = usedPowerUps.keySet().iterator();
+      while (witherIter.hasNext()) 
+      {
+         UUID witherUuid = (UUID) witherIter.next();
+         Iterator powerUpIter = usedPowerUps.get(witherUuid).keySet().iterator();
+         NBTTagCompound witherNbt = new NBTTagCompound();
+         while (powerUpIter.hasNext()) 
+         {
+            Class powerUpClass = (Class) powerUpIter.next();
+            NBTTagCompound powerUpNbt = new NBTTagCompound();
+            usedPowerUps.get(witherUuid).get(powerUpClass).writeToNBT(powerUpNbt);
+            witherNbt.setTag(powerUpClass.toString(), powerUpNbt);
+         }
+         nbt.setTag(witherUuid.toString(), witherNbt);
+      }
+   }
+
+   @Override
+   public void readFromNBT(NBTTagCompound nbt)
+   {
+      //! @todo I feel like NBTTagList might be of use here
+      
+      Set witherTags = nbt.func_150296_c();
+      Iterator witherIter = witherTags.iterator();
+      while (witherIter.hasNext()) 
+      {
+         String witherUuidString = (String)witherIter.next();
+         UUID witherUuid = UUID.fromString(witherUuidString);
+         NBTTagCompound witherNbt = (NBTTagCompound) nbt.getTag(witherUuidString);
+         
+         Set powerUpTags = nbt.func_150296_c();
+         Iterator powerUpIter = powerUpTags.iterator();
+         while (powerUpIter.hasNext()) 
+         {
+            String powerUpClassString = (String)powerUpIter.next();
+            try 
+            {
+               Class powerUpClass = Class.forName(powerUpClassString);
+               if(powerUpPrototypes.containsKey(powerUpClass))
+               {
+                  NBTTagCompound powerUpNbt = (NBTTagCompound) witherNbt.getTag(powerUpClassString);
+                  //! @todo the problem here is that there is no way to lookup an enitiy by it's uuid
+                  //!   this means we need to delay the reading of the powerup NBT until a Wither is loaded
+                  //!   with the correct UUID. This will likely take some adjustments to our current structure
+               }
+            }
+            catch (Exception ex)
+            {
+               HardcoreWither.logger.warn("Attempting to powerup from save with unknown powerup: " + powerUpClassString);
+            }
+         
+         }
       }
    }  
 }

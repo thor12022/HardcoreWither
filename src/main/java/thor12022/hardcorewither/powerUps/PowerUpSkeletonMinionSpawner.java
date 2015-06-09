@@ -25,7 +25,7 @@ class PowerUpSkeletonMinionSpawner extends AbstractPowerUpMinionSpawner
    @Override
    public void updateWither()
    {
-      if(ownerWither.isArmored())
+      if(ownerWither.isArmored() && ownerWither.func_82212_n() <= 0)
       {
          super.updateWither();
       }
