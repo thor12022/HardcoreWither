@@ -71,7 +71,13 @@ public class PowerUpManager implements INBTStorageClass
     */
    public void powerUpWither(EntityWither wither, int sizeOfPowerUp)
    {
-      if(!usedPowerUps.containsKey(wither.getUniqueID()))
+      if(savedWitherData.containsKey(wither.getUniqueID()))
+      {
+         loadWitherFromNBT(wither, savedWitherData.get(wither.getUniqueID()));
+         // now that it's loaded, we don't need to worry about its NBT data anymore
+         savedWitherData.remove(wither.getUniqueID());
+      }
+      else if(!usedPowerUps.containsKey(wither.getUniqueID()))
       {
          usedPowerUps.put(wither.getUniqueID(), new HashMap<Class, IPowerUp>());
          int powerUpSize = sizeOfPowerUp != 0 ? sizeOfPowerUp : largestPowerUp + 1;
@@ -120,9 +126,7 @@ public class PowerUpManager implements INBTStorageClass
    public void update(EntityWither wither)
    {
       if(!usedPowerUps.containsKey(wither.getUniqueID()))
-      {
-
-      }
+      {}
       else
       {
          // Iterate through the powerups for this Wither
@@ -140,9 +144,7 @@ public class PowerUpManager implements INBTStorageClass
    public void witherDied(EntityWither wither)
    {
       if(!usedPowerUps.containsKey(wither.getUniqueID()))
-      {
-
-      }
+      {}
       else
       {
          // Iterate through the powerups for this Wither
@@ -197,8 +199,16 @@ public class PowerUpManager implements INBTStorageClass
       }
    }  
    
-   private void delayReadFromNBT(NBTTagCompound nbt)
+   /**
+    * Loads the Power Up data for a Wither from NBT
+    * @param wither
+    * @param nbt
+    * @pre   the wither is not already in usedPowerUps
+    * @post  the Power Up map for this Wither in usedPowerUps contains the IPowerUps from NBT
+    */
+   private void loadWitherFromNBT(EntityWither wither, NBTTagCompound nbt)
    {
+      usedPowerUps.put(wither.getUniqueID(), new HashMap<Class, IPowerUp>());
       Set powerUpTags = nbt.func_150296_c();
       Iterator powerUpIter = powerUpTags.iterator();
       while (powerUpIter.hasNext()) 
@@ -210,6 +220,9 @@ public class PowerUpManager implements INBTStorageClass
             if(powerUpPrototypes.containsKey(powerUpClass))
             {
                NBTTagCompound powerUpNbt = (NBTTagCompound) nbt.getTag(powerUpClassString);
+               IPowerUp powerUp = powerUpPrototypes.get(powerUpClass).createPowerUp(wither);
+               powerUp.readFromNBT(powerUpNbt);
+               usedPowerUps.get(wither.getUniqueID()).put(powerUpClass, powerUp);
             }
          }
          catch (Exception ex)
