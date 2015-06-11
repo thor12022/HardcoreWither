@@ -42,10 +42,24 @@ class PowerUpHealthBoost extends AbstractPowerUp
    public void witherDied()
    {}
 
-	@Override
-	public void increasePower() 
-	{
-      double health = ownerWither.getEntityAttribute(SharedMonsterAttributes.maxHealth).getBaseValue();
-      ownerWither.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(health * healthBoostMultiplier);
-	}
+   @Override
+   public boolean increasePower() 
+   {
+      if(super.powerStrength < 20)
+      {
+         double health = ownerWither.getEntityAttribute(SharedMonsterAttributes.maxHealth).getBaseValue();
+         ownerWither.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(health * healthBoostMultiplier);
+         return true;
+      }
+      else
+      {
+         return false;
+      }
+   }
+   
+   @Override
+   public int minPower()
+   {
+      return 1;
+   }
 };

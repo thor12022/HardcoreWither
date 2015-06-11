@@ -128,7 +128,7 @@ public abstract class AbstractPowerUpMinionSpawner extends AbstractPowerUp imple
    }
 
    @Override
-   public void increasePower()
+   public boolean increasePower()
    {
       spawnerData.spawnCount *= spawnCountModifier;
       spawnerData.delay *= spawnDelayModifier;
@@ -136,6 +136,7 @@ public abstract class AbstractPowerUpMinionSpawner extends AbstractPowerUp imple
       spawnerData.maxDelay *=  spawnDelayModifier;
       spawnerData.maxEntities *=  maxEntitiesModifier;
       ResetSpawnerToData();
+      return true;
    };
    
    public void syncConfig(Configuration config)

@@ -40,9 +40,17 @@ class PowerUpDeathKnell extends AbstractPowerUp implements IConfigClass
    }
 
 	@Override
-	public void increasePower() 
+	public boolean increasePower() 
 	{
-	   knellStrengthMultiplier *= 1.5f;
+	   if(super.powerStrength > 20)
+	   {
+	      return false;
+	   }
+	   else
+	   {
+	      knellStrengthMultiplier *= 1.5f;
+	      return true;
+	   }
 	}
 
    @Override
@@ -56,5 +64,11 @@ class PowerUpDeathKnell extends AbstractPowerUp implements IConfigClass
    {
       knellStrengthMultiplier = config.getFloat("KnellStrengthMultiplier", this.getSectionName(), knellStrengthMultiplier, 0.0f, 10.0f, "");
       
+   }
+
+   @Override
+   public int minPower()
+   {
+      return 1;
    }
 };

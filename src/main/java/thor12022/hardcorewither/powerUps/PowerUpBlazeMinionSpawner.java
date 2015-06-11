@@ -40,4 +40,10 @@ class PowerUpBlazeMinionSpawner extends AbstractPowerUpMinionSpawner
    {
       return "PowerUpBlazeMinionSpawner";
    }
+
+   @Override
+   public int minPower()
+   {
+      return 2;
+   }
 };

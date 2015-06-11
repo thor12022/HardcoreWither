@@ -11,5 +11,7 @@ public interface IPowerUp extends INBTStorageClass
    
    IPowerUp createPowerUp(EntityWither theOwnerWither);
    
-   void increasePower();
+   boolean increasePower();
+   
+   int minPower();
 }

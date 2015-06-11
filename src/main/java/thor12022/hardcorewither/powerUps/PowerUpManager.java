@@ -1,10 +1,13 @@
 package thor12022.hardcorewither.powerUps;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Random;
 import java.util.Set;
+import java.util.SortedSet;
+import java.util.TreeSet;
 import java.util.UUID;
 
 import net.minecraft.entity.boss.EntityWither;
@@ -15,8 +18,9 @@ import thor12022.hardcorewither.interfaces.INBTStorageClass;
 
 public class PowerUpManager implements INBTStorageClass
 {
-   private Map<Class, IPowerUp> powerUpPrototypes;
-   private Map<UUID, Map<Class, IPowerUp>> usedPowerUps;
+   private Map<Class, IPowerUp>              powerUpPrototypes;
+   private Map<UUID, Map<Class, IPowerUp>>   usedPowerUps;
+   private Map<UUID, NBTTagCompound>         savedWitherData;
    private int largestPowerUp;
    private Random random;
    
@@ -24,6 +28,7 @@ public class PowerUpManager implements INBTStorageClass
    {
       powerUpPrototypes = new HashMap<Class, IPowerUp>();
       usedPowerUps = new HashMap<UUID, Map<Class, IPowerUp>>();
+      savedWitherData = new HashMap<UUID, NBTTagCompound>();
       largestPowerUp = 0;
       random = new Random();
       MinecraftForge.EVENT_BUS.register(this);
@@ -58,30 +63,6 @@ public class PowerUpManager implements INBTStorageClass
       }
    }
    
-   private void addRandomPowerUp(EntityWither ownerWither)
-   {
-      //! @todo not very efficient here, are we?
-      IPowerUp powerUpPrototpe = (IPowerUp) powerUpPrototypes.values().toArray()[random.nextInt(powerUpPrototypes.size())];
-      // If we haven't seen this Wither yet
-      if(!usedPowerUps.containsKey(ownerWither.getUniqueID()))
-      {
-         usedPowerUps.put(ownerWither.getUniqueID(), new HashMap<Class, IPowerUp>());
-      }
-      Map<Class, IPowerUp> powerUpsUsed = usedPowerUps.get(ownerWither.getUniqueID());
-      // If we have used this Power up for this Wither
-      if(powerUpsUsed.keySet().contains(powerUpPrototpe.getClass()))
-      {
-         IPowerUp powerUp = powerUpsUsed.get(powerUpPrototpe.getClass());
-         powerUp.increasePower();
-         HardcoreWither.logger.debug("Increasing power of " + powerUpPrototpe.getClass());
-      }
-      // If this is a new powerup for this Wither
-      else
-      {
-         powerUpsUsed.put(powerUpPrototpe.getClass(), powerUpPrototpe.createPowerUp(ownerWither));
-         HardcoreWither.logger.debug("Adding " + powerUpPrototpe.getClass());
-      }
-   }
    /**
     * Apply an amount of Power Ups to a certain Wither
     * @param wither apply power ups to this
@@ -92,10 +73,38 @@ public class PowerUpManager implements INBTStorageClass
    {
       if(!usedPowerUps.containsKey(wither.getUniqueID()))
       {
+         usedPowerUps.put(wither.getUniqueID(), new HashMap<Class, IPowerUp>());
          int powerUpSize = sizeOfPowerUp != 0 ? sizeOfPowerUp : largestPowerUp + 1;
-         for(int count = 0; count < sizeOfPowerUp; ++count)
+         Set<IPowerUp> validPowerUpPrototypes = (Set<IPowerUp>) powerUpPrototypes.values();
+         int usedStrength = 0;
+         while(usedStrength < sizeOfPowerUp && validPowerUpPrototypes.size() > 0)
          {
-            addRandomPowerUp(wither);
+            IPowerUp powerUpPrototpe = (IPowerUp) validPowerUpPrototypes.toArray()[random.nextInt(validPowerUpPrototypes.size())];
+            Map<Class, IPowerUp> powerUpsUsed = usedPowerUps.get(wither.getUniqueID());
+            if(powerUpPrototpe.minPower() > sizeOfPowerUp)
+            {
+               validPowerUpPrototypes.remove(powerUpPrototpe);
+            }
+            else if(powerUpsUsed.keySet().contains(powerUpPrototpe.getClass()))
+            {
+               IPowerUp powerUp = powerUpsUsed.get(powerUpPrototpe.getClass());
+               if( powerUp.increasePower() )
+               {
+                  ++usedStrength;
+                  HardcoreWither.logger.debug("Increasing power of " + powerUpPrototpe.getClass());
+               }
+               else
+               {
+                  validPowerUpPrototypes.remove(powerUpPrototpe);
+               }
+            }
+            // If this is a new powerup for this Wither
+            else
+            {
+               powerUpsUsed.put(powerUpPrototpe.getClass(), powerUpPrototpe.createPowerUp(wither));
+               usedStrength += powerUpPrototpe.minPower() > 0 ? powerUpPrototpe.minPower() : 1;
+               HardcoreWither.logger.debug("Adding " + powerUpPrototpe.getClass());
+            }
          }
          if(powerUpSize > largestPowerUp)
          {
@@ -183,29 +192,31 @@ public class PowerUpManager implements INBTStorageClass
          String witherUuidString = (String)witherIter.next();
          UUID witherUuid = UUID.fromString(witherUuidString);
          NBTTagCompound witherNbt = (NBTTagCompound) nbt.getTag(witherUuidString);
-         
-         Set powerUpTags = nbt.func_150296_c();
-         Iterator powerUpIter = powerUpTags.iterator();
-         while (powerUpIter.hasNext()) 
-         {
-            String powerUpClassString = (String)powerUpIter.next();
-            try 
-            {
-               Class powerUpClass = Class.forName(powerUpClassString);
-               if(powerUpPrototypes.containsKey(powerUpClass))
-               {
-                  NBTTagCompound powerUpNbt = (NBTTagCompound) witherNbt.getTag(powerUpClassString);
-                  //! @todo the problem here is that there is no way to lookup an enitiy by it's uuid
-                  //!   this means we need to delay the reading of the powerup NBT until a Wither is loaded
-                  //!   with the correct UUID. This will likely take some adjustments to our current structure
-               }
-            }
-            catch (Exception ex)
-            {
-               HardcoreWither.logger.warn("Attempting to powerup from save with unknown powerup: " + powerUpClassString);
-            }
-         
-         }
+         // we have no way to look up Withers by UUID until the chunk they are in gets loaded
+         savedWitherData.put(witherUuid, witherNbt);
       }
    }  
+   
+   private void delayReadFromNBT(NBTTagCompound nbt)
+   {
+      Set powerUpTags = nbt.func_150296_c();
+      Iterator powerUpIter = powerUpTags.iterator();
+      while (powerUpIter.hasNext()) 
+      {
+         String powerUpClassString = (String)powerUpIter.next();
+         try 
+         {
+            Class powerUpClass = Class.forName(powerUpClassString);
+            if(powerUpPrototypes.containsKey(powerUpClass))
+            {
+               NBTTagCompound powerUpNbt = (NBTTagCompound) nbt.getTag(powerUpClassString);
+            }
+         }
+         catch (Exception ex)
+         {
+            HardcoreWither.logger.warn("Attempting to powerup from save with unknown powerup: " + powerUpClassString);
+         }
+      
+      }
+   }
 }
