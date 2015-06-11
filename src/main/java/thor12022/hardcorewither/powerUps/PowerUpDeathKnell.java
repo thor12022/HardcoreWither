@@ -49,7 +49,7 @@ class PowerUpDeathKnell extends AbstractPowerUp implements IConfigClass
 	   else
 	   {
 	      knellStrengthMultiplier *= 1.5f;
-	      return true;
+	      return super.increasePower();
 	   }
 	}
 

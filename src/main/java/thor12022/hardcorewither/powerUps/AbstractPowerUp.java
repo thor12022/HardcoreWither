@@ -45,4 +45,11 @@ abstract class AbstractPowerUp implements IPowerUp
       powerStrength = nbt.getInteger("powerStrength");
       powerStrength = powerStrength <= 0 ? 1 : powerStrength;
    }
+   
+   @Override
+   public boolean increasePower()
+   {
+      ++powerStrength;
+      return true;
+   }
 }

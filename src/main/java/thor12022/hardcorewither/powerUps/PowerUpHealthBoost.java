@@ -49,7 +49,7 @@ class PowerUpHealthBoost extends AbstractPowerUp
       {
          double health = ownerWither.getEntityAttribute(SharedMonsterAttributes.maxHealth).getBaseValue();
          ownerWither.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(health * healthBoostMultiplier);
-         return true;
+         return super.increasePower();
       }
       else
       {

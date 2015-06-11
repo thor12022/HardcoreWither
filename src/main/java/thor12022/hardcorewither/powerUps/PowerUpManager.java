@@ -1,5 +1,6 @@
 package thor12022.hardcorewither.powerUps;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -81,7 +82,7 @@ public class PowerUpManager implements INBTStorageClass
       {
          usedPowerUps.put(wither.getUniqueID(), new HashMap<Class, IPowerUp>());
          int powerUpSize = sizeOfPowerUp != 0 ? sizeOfPowerUp : largestPowerUp + 1;
-         Set<IPowerUp> validPowerUpPrototypes = (Set<IPowerUp>) powerUpPrototypes.values();
+         Collection<IPowerUp> validPowerUpPrototypes = powerUpPrototypes.values();
          int usedStrength = 0;
          while(usedStrength < sizeOfPowerUp && validPowerUpPrototypes.size() > 0)
          {

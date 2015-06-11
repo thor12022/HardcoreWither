@@ -71,6 +71,7 @@ public class HardcoreWither
       eventHandler   =  new EventHandler(playerHandler, powerUpManager);
       
       dataStore.addStorageClass(playerHandler, "PlayerHandler");
+      dataStore.addStorageClass(powerUpManager, "witherData");
    }
 
    @Mod.EventHandler

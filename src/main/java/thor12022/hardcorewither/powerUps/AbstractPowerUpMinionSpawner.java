@@ -53,7 +53,7 @@ public abstract class AbstractPowerUpMinionSpawner extends AbstractPowerUp imple
    {
       public String  entityLocalizedName = "Pig";  //!< Mod Localized name of Entity
       public int     delay = 20;                   //!< 0-65535
-      public int     playerRange = 16;             //!< 0-65535
+      public int     playerRange = 48;             //!< 0-65535
       public int     maxEntities = 6;              //!< 0-65535
       public int     minDelay = 200;               //!< 0-65535
       public int     maxDelay = 800;               //!< 0-65535
@@ -136,7 +136,7 @@ public abstract class AbstractPowerUpMinionSpawner extends AbstractPowerUp imple
       spawnerData.maxDelay *=  spawnDelayModifier;
       spawnerData.maxEntities *=  maxEntitiesModifier;
       ResetSpawnerToData();
-      return true;
+      return super.increasePower();
    };
    
    public void syncConfig(Configuration config)
