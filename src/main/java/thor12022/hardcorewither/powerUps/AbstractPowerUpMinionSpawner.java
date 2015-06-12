@@ -153,4 +153,16 @@ public abstract class AbstractPowerUpMinionSpawner extends AbstractPowerUp imple
       spawnDelayModifier = config.getFloat("spawnDelayModifier", this.getSectionName(), spawnDelayModifier, 0f, 1f, "The smaller it is, the faster the delay decrease. 1.0 to never decrease");
       maxEntitiesModifier = config.getFloat("maxEntitiesModifier", this.getSectionName(), spawnCountModifier, 1f, 10f, "Amount to increase Max Entities by. 1.0 to never increase");
    }
+   
+   @Override
+   public void readFromNBT(NBTTagCompound nbt)
+   {
+      super.readFromNBT(nbt);
+      spawnerData.spawnCount *= (spawnCountModifier * super.powerStrength);
+      spawnerData.delay *= (spawnDelayModifier * super.powerStrength);
+      spawnerData.minDelay *=  (spawnDelayModifier * super.powerStrength);
+      spawnerData.maxDelay *=  (spawnDelayModifier * super.powerStrength);
+      spawnerData.maxEntities *=  (maxEntitiesModifier * super.powerStrength);
+      ResetSpawnerToData();
+   }
 }
