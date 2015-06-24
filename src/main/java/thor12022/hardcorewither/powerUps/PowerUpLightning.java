@@ -50,10 +50,13 @@ class PowerUpLightning extends AbstractPowerUp implements IConfigClass
       if( ownerWither.worldObj.getTotalWorldTime() > lightningNextTick )
       {
          EntityLivingBase target = ownerWither.getAITarget();
-         double lightningXPos = target.lastTickPosX + (4 * random.nextGaussian() * lightningInaccuracy);
-         double lightningYPos = target.lastTickPosX + (4 * random.nextGaussian() * lightningInaccuracy);
-         double lightningZPos = target.lastTickPosX + (4 * random.nextGaussian() * lightningInaccuracy);
-         ownerWither.worldObj.addWeatherEffect(new EntityLightningBolt(ownerWither.worldObj, lightningXPos, lightningYPos, lightningZPos));
+         if(target != null)
+         {
+            double lightningXPos = target.lastTickPosX + (4 * random.nextGaussian() * lightningInaccuracy);
+            double lightningYPos = target.lastTickPosX + (4 * random.nextGaussian() * lightningInaccuracy);
+            double lightningZPos = target.lastTickPosX + (4 * random.nextGaussian() * lightningInaccuracy);
+            ownerWither.worldObj.addWeatherEffect(new EntityLightningBolt(ownerWither.worldObj, lightningXPos, lightningYPos, lightningZPos));
+         }
          setNextRandomTick();
       }
    }
@@ -94,6 +97,6 @@ class PowerUpLightning extends AbstractPowerUp implements IConfigClass
       lightningFrequencyMultiplier = config.getFloat("LightningFrequencyMultiplier", this.getSectionName(), lightningFrequencyMultiplier, 0.0f, 10.0f, "");
       lightningRandomness = config.getFloat("LightningRandomness", this.getSectionName(), lightningRandomness, 0.0f, 10.0f, "0 is not random, 1 is more random");
       lightningFequencyBase = config.getInt("LightningFequencyBase", this.getSectionName(), lightningFequencyBase, 1, Integer.MAX_VALUE, "Avg number of ticks between lightning");
-      lightningInaccuracy = config.getFloat("LightningInnacuracy", this.getSectionName(), lightningInaccuracy, 0.0f, 10.0f, "0 is prefecc");
+      lightningInaccuracy = config.getFloat("LightningInnacuracy", this.getSectionName(), lightningInaccuracy, 0.0f, 10.0f, "0 is prefect");
    }
 };
