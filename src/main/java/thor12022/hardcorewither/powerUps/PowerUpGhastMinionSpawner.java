@@ -13,6 +13,8 @@ class PowerUpGhastMinionSpawner extends AbstractPowerUpMinionSpawner
    private PowerUpGhastMinionSpawner(EntityWither theOwnerWither)
    {
       super(theOwnerWither, EntityGhastMinion.LOCALIZED_NAME);
+      super.spawnerData.spawnRange = 16;
+      super.ResetSpawnerToData();
    }
 
    @Override
