@@ -55,9 +55,7 @@ public class EventHandler
       if (event.entity != null && event.entity.getClass() == EntityWither.class)
       {
          EntityWither theWither = (EntityWither)event.entity;
-         // only when the Wither is charging up (to prevent some triggering with chunk reload)
-         // @todo get a better way to see it we've had it before
-         if( theWither.func_82212_n() > 0 )
+         if( !powerUpManager.isWitherPoweredUp(theWither) )
          {
             List nearbyPlayers = theWither.worldObj.getEntitiesWithinAABB(EntityPlayer.class, theWither.boundingBox.expand(64.0D, 64.0D, 64.0D));
             double powerUpSize = 0.0;

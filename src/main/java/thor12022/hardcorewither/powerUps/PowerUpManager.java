@@ -162,6 +162,11 @@ public class PowerUpManager implements INBTStorageClass
       }
    }
 
+   public boolean isWitherPoweredUp(EntityWither wither)
+   {
+      return usedPowerUps.containsKey(wither.getUniqueID());
+   }
+   
    @Override
    public void writeToNBT(NBTTagCompound nbt)
    {
