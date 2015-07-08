@@ -83,6 +83,13 @@ public class EventHandler
    {
       if (event.entityLiving != null && event.entityLiving.getClass() == EntityWither.class)
       {
+         List nearbyPlayers = event.entity.worldObj.getEntitiesWithinAABB(EntityPlayer.class, event.entity.boundingBox.expand(64.0D, 64.0D, 64.0D));
+         double powerUpSize = 0.0;
+         for (int index = 0; index < nearbyPlayers.size(); ++index)
+         {
+            EntityPlayer player = (EntityPlayer)nearbyPlayers.get(index);
+            powerUpSize += playerHandler.wasAtWitherSpawn(player);
+         }
          powerUpManager.witherDied((EntityWither) event.entityLiving);
       }
    }
