@@ -16,12 +16,14 @@ import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartedEvent;
+import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
 import thor12022.hardcorewither.blocks.BlockRecipeRegistry;
 import thor12022.hardcorewither.blocks.BlockRegistry;
 import thor12022.hardcorewither.client.gui.CreativeTabBaseMod;
 import thor12022.hardcorewither.client.gui.GuiHandler;
+import thor12022.hardcorewither.command.CommandManager;
 import thor12022.hardcorewither.config.ConfigManager;
 import thor12022.hardcorewither.entity.EntityRegistry;
 import thor12022.hardcorewither.items.ItemRecipeRegistry;
@@ -109,6 +111,12 @@ public class HardcoreWither
    public void postInit(FMLPostInitializationEvent event)
    {
       logger.info(TextHelper.localize("info." + ModInformation.ID + ".console.load.postInit"));
+   }
+   
+   @Mod.EventHandler
+   public void serverStarting(FMLServerStartingEvent event)
+   {
+      CommandManager.serverStarting(event);
    }
 
    @Mod.EventHandler
