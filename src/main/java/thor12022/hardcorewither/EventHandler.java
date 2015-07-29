@@ -11,6 +11,7 @@ import net.minecraft.entity.boss.EntityWither;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
@@ -89,6 +90,7 @@ public class EventHandler
          {
             EntityPlayer player = (EntityPlayer)nearbyPlayers.get(index);
             powerUpSize += playerHandler.wasAtWitherSpawn(player);
+            player.addChatMessage(new ChatComponentText(TextHelper.localize("debug." + ModInformation.ID + ".chat.wither-experience")));
          }
          powerUpManager.witherDied((EntityWither) event.entityLiving);
       }

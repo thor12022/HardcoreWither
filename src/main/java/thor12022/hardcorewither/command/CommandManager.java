@@ -17,23 +17,23 @@ public class CommandManager extends CommandBase
 {
    static private CommandManager instance = new CommandManager(); 
    
-   static void registerSubCommand(CommandBase command)
+   static public CommandManager getInstance()
    {
-      instance.commandMap.put(command.getCommandName(), command);
+      return instance;
    }
    
+   /**
+    * Registers the commands with the Server
+    */
    public static void serverStarting(FMLServerStartingEvent event)
    {
-      //registerSubCommand(new CommandName());
-      
-      Iterator commandIter = instance.commandMap.keySet().iterator();
-      while( commandIter.hasNext() )
-      {
-         event.registerServerCommand((ICommand) commandIter.next());
-      }
+      event.registerServerCommand(instance);
    }
-
-   private Map<String, CommandBase> commandMap = new HashMap<String, CommandBase>();
+   
+   private Map<String, AbstractSubCommand> commandMap = new HashMap<String, AbstractSubCommand>();
+   
+   private CommandManager()
+   {}
    
    @Override
    public String getCommandName()
@@ -44,7 +44,13 @@ public class CommandManager extends CommandBase
    @Override
    public String getCommandUsage(ICommandSender sender)
    {
-      return "commands." + getCommandName() + ".usage";
+      String text = "commands." + getCommandName() + ".usage";
+      Iterator iter = commandMap.keySet().iterator();
+      while(iter.hasNext())
+      {
+         text += iter.next() + "\n";
+      }
+      return text;
    }
 
    /**
@@ -69,11 +75,13 @@ public class CommandManager extends CommandBase
       }
       else if (commandMap.containsKey(args[0]))
       {
-         //! @todo This is stupid, fix it
-         ArrayList argsArray = new ArrayList(args.length);
-         argsArray.remove(0);
-         commandMap.get(args[0]).processCommand(sender, (String[])argsArray.toArray());
+         commandMap.get(args[0]).processCommand(sender, args, 1);
       }
    }
 
+   public void registerSubCommand(AbstractSubCommand subCommand)
+   {
+      commandMap.put(subCommand.getCommandName(), subCommand);
+   }
+   
 }

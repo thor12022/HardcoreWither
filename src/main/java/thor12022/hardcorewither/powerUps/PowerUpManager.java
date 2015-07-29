@@ -11,9 +11,13 @@ import java.util.SortedSet;
 import java.util.TreeSet;
 import java.util.UUID;
 
+import net.minecraft.command.ICommandSender;
+import net.minecraft.command.WrongUsageException;
 import net.minecraft.entity.boss.EntityWither;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.MinecraftForge;
+import thor12022.hardcorewither.command.AbstractSubCommand;
+import thor12022.hardcorewither.command.CommandManager;
 import thor12022.hardcorewither.HardcoreWither;
 import thor12022.hardcorewither.interfaces.INBTStorageClass;
 
@@ -24,7 +28,103 @@ public class PowerUpManager implements INBTStorageClass
    private Map<UUID, NBTTagCompound>         savedWitherData;
    private int largestPowerUp;
    private Random random;
+   AbstractSubCommand spawnCommand = new AbstractSubCommand()
+   {
+      @Override
+      public final String getCommandUsage(ICommandSender sender)
+      {
+         String text = super.getCommandUsage(sender);
+         Iterator iter = powerUpPrototypes.keySet().iterator();
+         while(iter.hasNext())
+         {
+            text += iter.next() + "\n";
+         }
+         return text;
+      }
+
+      @Override
+      public final String getCommandName()
+      {
+         return "spawn";
+      }
+
+      @Override
+      public void processCommand(ICommandSender sender, String[] args, int startingIndex)
+      {
+         if( args.length < startingIndex + 1 )
+         {
+            throw new WrongUsageException(getCommandUsage(sender));
+         }
+         else
+         {
+            NBTTagCompound nbt = new NBTTagCompound();
+
+            if( !parsePowerUps(args[startingIndex], nbt) )
+            {
+               throw new WrongUsageException(getCommandUsage(sender));
+            }
+            EntityWither spawnedWither = new EntityWither(sender.getEntityWorld());
+            loadWitherFromNBT(spawnedWither, nbt);
+         }
+      }
+      
+      /**!
+       * @brief separate the command into segments by ';' tokens and calls processing on those segments
+       * @param arg [in] remaining string of characters
+       * @param nbt [out] destination for processed command
+       * @return parsing success
+       * @todo I really don't like the way this is done, it should really utilize the utilities
+       *   that are part of the CommandBase class
+       */
+      private boolean parsePowerUps(String arg, NBTTagCompound nbt)
+      {
+         final String majorDiv = ";";
+         final String minorDiv = ",";
+         int lastMajorPos = 0;
+         int majorPos = -1;
+         try
+         {
+         do
+            {
+               majorPos = arg.indexOf(majorDiv, majorPos);
+               if(majorPos == -1)
+               {
+                  majorPos = arg.length() - 1;
+               }
+               String segment = arg.substring(lastMajorPos, majorPos+1);
+               int minorPos = segment.indexOf(minorDiv, lastMajorPos);
+               lastMajorPos = majorPos;
+               if(minorPos == -1 || minorPos == segment.length() - 1)
+               {
+                  return false;
+               }
+               String powerUpName = segment.substring(0, minorPos).trim();
+               String powerUpStrengthStr = segment.substring(minorPos + 1).trim();
+               short powerUpStrength = 0;
+               try
+               {
+                  powerUpStrength = Short.parseShort(powerUpStrengthStr);
+               }
+               catch(NumberFormatException exp)
+               {
+                  return false;
+               }
+               nbt.setShort(powerUpName, powerUpStrength);
+            } while(majorPos != arg.length() - 1);
+         }
+         catch(Exception excp)
+         {
+            // ok, so this is kinda the Lazy Man's way of making sure nothing really goes wrong
+            HardcoreWither.logger.debug("PowerUp Command Formatting Error (probably) not accounted for " + excp);
+            return false;
+         }
+         return true;
+      }
+   };
    
+   /**
+    * Default constructor
+    */
    public PowerUpManager()
    {
       powerUpPrototypes = new HashMap<Class, IPowerUp>();
@@ -32,6 +132,7 @@ public class PowerUpManager implements INBTStorageClass
       savedWitherData = new HashMap<UUID, NBTTagCompound>();
       largestPowerUp = 0;
       random = new Random();
+      CommandManager.getInstance().registerSubCommand(spawnCommand);
       MinecraftForge.EVENT_BUS.register(this);
    }
    
