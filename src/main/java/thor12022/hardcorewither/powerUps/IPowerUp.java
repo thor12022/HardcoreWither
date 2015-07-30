@@ -14,4 +14,6 @@ public interface IPowerUp extends INBTStorageClass
    boolean increasePower();
    
    int minPower();
+
+   String getName();
 }

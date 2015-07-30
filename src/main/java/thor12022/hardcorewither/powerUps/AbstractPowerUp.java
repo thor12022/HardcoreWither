@@ -13,17 +13,22 @@ import net.minecraft.nbt.NBTTagCompound;
 abstract class AbstractPowerUp implements IPowerUp
 {
    final protected EntityWither ownerWither;
+   final protected String className = getClass().getSimpleName();
    protected int powerStrength;
    
-   static private Set<Class> constructedPrototypeClasses = new HashSet<Class>();
+   static private Set<String> constructedPrototypeClasses = new HashSet<String>();
    
    AbstractPowerUp()
    {
       ownerWither = null;
       powerStrength = 0;
-      if(constructedPrototypeClasses.contains(getClass()))
+      if(constructedPrototypeClasses.contains(className))
       {
-         HardcoreWither.logger.debug("Duplicate Prototype constructed for " + getClass().toString());
+         HardcoreWither.logger.debug("Duplicate Prototype constructed for " + className);
+      }
+      else
+      {
+         constructedPrototypeClasses.add(className);
       }
    }
    
@@ -51,5 +56,11 @@ abstract class AbstractPowerUp implements IPowerUp
    {
       ++powerStrength;
       return true;
+   }
+   
+   @Override
+   public String getName()
+   {
+      return className;
    }
 }

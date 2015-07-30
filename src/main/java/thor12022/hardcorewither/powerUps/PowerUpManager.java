@@ -15,6 +15,7 @@ import net.minecraft.command.ICommandSender;
 import net.minecraft.command.WrongUsageException;
 import net.minecraft.entity.boss.EntityWither;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.ChunkCoordinates;
 import net.minecraftforge.common.MinecraftForge;
 import thor12022.hardcorewither.command.AbstractSubCommand;
 import thor12022.hardcorewither.command.CommandManager;
@@ -23,8 +24,8 @@ import thor12022.hardcorewither.interfaces.INBTStorageClass;
 
 public class PowerUpManager implements INBTStorageClass
 {
-   private Map<Class, IPowerUp>              powerUpPrototypes;
-   private Map<UUID, Map<Class, IPowerUp>>   usedPowerUps;
+   private Map<String, IPowerUp>              powerUpPrototypes;
+   private Map<UUID, Map<String, IPowerUp>>  usedPowerUps;
    private Map<UUID, NBTTagCompound>         savedWitherData;
    private int largestPowerUp;
    private Random random;
@@ -58,13 +59,16 @@ public class PowerUpManager implements INBTStorageClass
          else
          {
             NBTTagCompound nbt = new NBTTagCompound();
-
-            if( !parsePowerUps(args[startingIndex], nbt) )
+            EntityWither spawnedWither = new EntityWither(sender.getEntityWorld());
+            if( !parsePowerUps(args[startingIndex], nbt, spawnedWither) )
             {
                throw new WrongUsageException(getCommandUsage(sender));
             }
-            EntityWither spawnedWither = new EntityWither(sender.getEntityWorld());
+            spawnedWither.func_82206_m();
+            ChunkCoordinates chunkCoords = sender.getPlayerCoordinates();
+            spawnedWither.setPosition(chunkCoords.posX, chunkCoords.posY, chunkCoords.posZ);
             loadWitherFromNBT(spawnedWither, nbt);
+            sender.getEntityWorld().spawnEntityInWorld(spawnedWither);
          }
       }
       
@@ -76,7 +80,7 @@ public class PowerUpManager implements INBTStorageClass
        * @todo I really don't like the way this is done, it should really utilize the utilities
        *   that are part of the CommandBase class
        */
-      private boolean parsePowerUps(String arg, NBTTagCompound nbt)
+      private boolean parsePowerUps(String arg, NBTTagCompound nbt, EntityWither wither)
       {
          final String majorDiv = ";";
          final String minorDiv = ",";
@@ -86,12 +90,17 @@ public class PowerUpManager implements INBTStorageClass
          {
          do
             {
-               majorPos = arg.indexOf(majorDiv, majorPos);
+               majorPos = arg.indexOf(majorDiv, lastMajorPos+1);
+               String segment;
                if(majorPos == -1)
                {
                   majorPos = arg.length() - 1;
+                  segment = arg.substring(lastMajorPos);
                }
-               String segment = arg.substring(lastMajorPos, majorPos+1);
+               else
+               {
+                  segment = arg.substring(lastMajorPos, majorPos);
+               }
                int minorPos = segment.indexOf(minorDiv, lastMajorPos);
                lastMajorPos = majorPos;
                if(minorPos == -1 || minorPos == segment.length() - 1)
@@ -100,16 +109,25 @@ public class PowerUpManager implements INBTStorageClass
                }
                String powerUpName = segment.substring(0, minorPos).trim();
                String powerUpStrengthStr = segment.substring(minorPos + 1).trim();
-               short powerUpStrength = 0;
+               int powerUpStrength = 0;
                try
                {
-                  powerUpStrength = Short.parseShort(powerUpStrengthStr);
+                  powerUpStrength = Integer.parseInt(powerUpStrengthStr);
                }
                catch(NumberFormatException exp)
                {
                   return false;
                }
-               nbt.setShort(powerUpName, powerUpStrength);
+               IPowerUp powerUpPrototype = powerUpPrototypes.get(powerUpName);
+               IPowerUp powerUp = powerUpPrototype.createPowerUp(wither);
+               // @todo should be able to set or create with correct strength
+               for(; powerUpStrength > 0; --powerUpStrength)
+               {
+                  powerUp.increasePower();
+               }
+               NBTTagCompound powerUpNbt = new NBTTagCompound();
+               powerUp.writeToNBT(powerUpNbt);
+               nbt.setTag(powerUpName, powerUpNbt);
             } while(majorPos != arg.length() - 1);
          }
          catch(Exception excp)
@@ -127,8 +145,8 @@ public class PowerUpManager implements INBTStorageClass
     */
    public PowerUpManager()
    {
-      powerUpPrototypes = new HashMap<Class, IPowerUp>();
-      usedPowerUps = new HashMap<UUID, Map<Class, IPowerUp>>();
+      powerUpPrototypes = new HashMap<String, IPowerUp>();
+      usedPowerUps = new HashMap<UUID, Map<String, IPowerUp>>();
       savedWitherData = new HashMap<UUID, NBTTagCompound>();
       largestPowerUp = 0;
       random = new Random();
@@ -154,15 +172,15 @@ public class PowerUpManager implements INBTStorageClass
     */
    public void registerPowerUp( IPowerUp powerUp)
    {
-      if(!powerUpPrototypes.containsKey(powerUp.getClass()))
+      if(!powerUpPrototypes.containsKey(powerUp.getName()))
       {
-         powerUpPrototypes.put(powerUp.getClass(), powerUp);
-         HardcoreWither.logger.info("Registering Prototype for " + powerUp.getClass().toString());
+         powerUpPrototypes.put(powerUp.getName(), powerUp);
+         HardcoreWither.logger.info("Registering Prototype for " + powerUp.getName().toString());
          
       }
       else
       {
-         HardcoreWither.logger.debug("Duplicate Prototype registered for " + powerUp.getClass().toString());
+         HardcoreWither.logger.debug("Duplicate Prototype registered for " + powerUp.getName().toString());
       }
    }
    
@@ -182,14 +200,14 @@ public class PowerUpManager implements INBTStorageClass
       }
       else if(!usedPowerUps.containsKey(wither.getUniqueID()))
       {
-         usedPowerUps.put(wither.getUniqueID(), new HashMap<Class, IPowerUp>());
+         usedPowerUps.put(wither.getUniqueID(), new HashMap<String, IPowerUp>());
          int powerUpSize = sizeOfPowerUp != 0 ? sizeOfPowerUp : largestPowerUp + 1;
          Collection<IPowerUp> validPowerUpPrototypes = powerUpPrototypes.values();
          int usedStrength = 0;
          while(usedStrength < sizeOfPowerUp && validPowerUpPrototypes.size() > 0)
          {
             IPowerUp powerUpPrototpe = (IPowerUp) validPowerUpPrototypes.toArray()[random.nextInt(validPowerUpPrototypes.size())];
-            Map<Class, IPowerUp> powerUpsUsed = usedPowerUps.get(wither.getUniqueID());
+            Map<String, IPowerUp> powerUpsUsed = usedPowerUps.get(wither.getUniqueID());
             if(powerUpPrototpe.minPower() > sizeOfPowerUp)
             {
                validPowerUpPrototypes.remove(powerUpPrototpe);
@@ -210,9 +228,9 @@ public class PowerUpManager implements INBTStorageClass
             // If this is a new powerup for this Wither
             else
             {
-               powerUpsUsed.put(powerUpPrototpe.getClass(), powerUpPrototpe.createPowerUp(wither));
+               powerUpsUsed.put(powerUpPrototpe.getName(), powerUpPrototpe.createPowerUp(wither));
                usedStrength += powerUpPrototpe.minPower() > 0 ? powerUpPrototpe.minPower() : 1;
-               HardcoreWither.logger.debug("Adding " + powerUpPrototpe.getClass());
+               HardcoreWither.logger.debug("Adding " + powerUpPrototpe.getName());
             }
          }
          if(powerUpSize > largestPowerUp)
@@ -281,10 +299,10 @@ public class PowerUpManager implements INBTStorageClass
          NBTTagCompound witherNbt = new NBTTagCompound();
          while (powerUpIter.hasNext()) 
          {
-            Class powerUpClass = (Class) powerUpIter.next();
+            String powerUpName = (String) powerUpIter.next();
             NBTTagCompound powerUpNbt = new NBTTagCompound();
-            usedPowerUps.get(witherUuid).get(powerUpClass).writeToNBT(powerUpNbt);
-            witherNbt.setTag(powerUpClass.toString(), powerUpNbt);
+            usedPowerUps.get(witherUuid).get(powerUpName).writeToNBT(powerUpNbt);
+            witherNbt.setTag(powerUpName, powerUpNbt);
          }
          nbt.setTag(witherUuid.toString(), witherNbt);
       }
@@ -316,26 +334,25 @@ public class PowerUpManager implements INBTStorageClass
     */
    private void loadWitherFromNBT(EntityWither wither, NBTTagCompound nbt)
    {
-      usedPowerUps.put(wither.getUniqueID(), new HashMap<Class, IPowerUp>());
+      usedPowerUps.put(wither.getUniqueID(), new HashMap<String, IPowerUp>());
       Set powerUpTags = nbt.func_150296_c();
       Iterator powerUpIter = powerUpTags.iterator();
       while (powerUpIter.hasNext()) 
       {
-         String powerUpClassString = (String)powerUpIter.next();
+         String powerUpName = (String)powerUpIter.next();
          try 
          {
-            Class powerUpClass = Class.forName(powerUpClassString);
-            if(powerUpPrototypes.containsKey(powerUpClass))
+            if(powerUpPrototypes.containsKey(powerUpName))
             {
-               NBTTagCompound powerUpNbt = (NBTTagCompound) nbt.getTag(powerUpClassString);
-               IPowerUp powerUp = powerUpPrototypes.get(powerUpClass).createPowerUp(wither);
+               NBTTagCompound powerUpNbt = (NBTTagCompound) nbt.getTag(powerUpName);
+               IPowerUp powerUp = powerUpPrototypes.get(powerUpName).createPowerUp(wither);
                powerUp.readFromNBT(powerUpNbt);
-               usedPowerUps.get(wither.getUniqueID()).put(powerUpClass, powerUp);
+               usedPowerUps.get(wither.getUniqueID()).put(powerUpName, powerUp);
             }
          }
          catch (Exception ex)
          {
-            HardcoreWither.logger.warn("Attempting to powerup from save with unknown powerup: " + powerUpClassString);
+            HardcoreWither.logger.warn("Attempting to powerup from save with unknown powerup: " + powerUpName + "\n\t" + ex);
          }
       
       }
