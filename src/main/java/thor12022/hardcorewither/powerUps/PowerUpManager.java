@@ -52,7 +52,7 @@ public class PowerUpManager implements INBTStorageClass
       @Override
       public void processCommand(ICommandSender sender, String[] args, int startingIndex)
       {
-         if( args.length < startingIndex + 1 )
+         if( args.length < startingIndex + 2 )
          {
             throw new WrongUsageException(getCommandUsage(sender));
          }
@@ -60,83 +60,36 @@ public class PowerUpManager implements INBTStorageClass
          {
             NBTTagCompound nbt = new NBTTagCompound();
             EntityWither spawnedWither = new EntityWither(sender.getEntityWorld());
-            if( !parsePowerUps(args[startingIndex], nbt, spawnedWither) )
+            try
             {
+               for(int argIndex = startingIndex; argIndex < args.length - 1; argIndex += 2)
+               {
+                  String powerUpName = args[argIndex];
+                  int powerUpStrength = parseIntWithMin(sender, args[argIndex + 1], 1);
+                  IPowerUp powerUpPrototype = powerUpPrototypes.get(powerUpName);
+                  IPowerUp powerUp = powerUpPrototype.createPowerUp(spawnedWither);
+                  // @todo should be able to set or create with correct strength
+                  for(; powerUpStrength > 1; --powerUpStrength)
+                  {
+                     powerUp.increasePower();
+                  }
+                  NBTTagCompound powerUpNbt = new NBTTagCompound();
+                  powerUp.writeToNBT(powerUpNbt);
+                  nbt.setTag(powerUpName, powerUpNbt);
+               }
+            }
+            catch(Exception excp)
+            {
+               // ok, so this is kinda the Lazy Man's way of making sure nothing really goes wrong
+               HardcoreWither.logger.debug("PowerUp Command Formatting Error (probably) not accounted for " + excp);
                throw new WrongUsageException(getCommandUsage(sender));
             }
             spawnedWither.func_82206_m();
             ChunkCoordinates chunkCoords = sender.getPlayerCoordinates();
             spawnedWither.setPosition(chunkCoords.posX, chunkCoords.posY, chunkCoords.posZ);
-            loadWitherFromNBT(spawnedWither, nbt);
+            savedWitherData.put(spawnedWither.getUniqueID(), nbt);
             sender.getEntityWorld().spawnEntityInWorld(spawnedWither);
          }
-      }
-      
-      /**!
-       * @brief separate the command into segments by ';' tokens and calls processing on those segments
-       * @param arg [in] remaining string of characters
-       * @param nbt [out] destination for processed command
-       * @return parsing success
-       * @todo I really don't like the way this is done, it should really utilize the utilities
-       *   that are part of the CommandBase class
-       */
-      private boolean parsePowerUps(String arg, NBTTagCompound nbt, EntityWither wither)
-      {
-         final String majorDiv = ";";
-         final String minorDiv = ",";
-         int lastMajorPos = 0;
-         int majorPos = -1;
-         try
-         {
-         do
-            {
-               majorPos = arg.indexOf(majorDiv, lastMajorPos+1);
-               String segment;
-               if(majorPos == -1)
-               {
-                  majorPos = arg.length() - 1;
-                  segment = arg.substring(lastMajorPos);
-               }
-               else
-               {
-                  segment = arg.substring(lastMajorPos, majorPos);
-               }
-               int minorPos = segment.indexOf(minorDiv, lastMajorPos);
-               lastMajorPos = majorPos;
-               if(minorPos == -1 || minorPos == segment.length() - 1)
-               {
-                  return false;
-               }
-               String powerUpName = segment.substring(0, minorPos).trim();
-               String powerUpStrengthStr = segment.substring(minorPos + 1).trim();
-               int powerUpStrength = 0;
-               try
-               {
-                  powerUpStrength = Integer.parseInt(powerUpStrengthStr);
-               }
-               catch(NumberFormatException exp)
-               {
-                  return false;
-               }
-               IPowerUp powerUpPrototype = powerUpPrototypes.get(powerUpName);
-               IPowerUp powerUp = powerUpPrototype.createPowerUp(wither);
-               // @todo should be able to set or create with correct strength
-               for(; powerUpStrength > 0; --powerUpStrength)
-               {
-                  powerUp.increasePower();
-               }
-               NBTTagCompound powerUpNbt = new NBTTagCompound();
-               powerUp.writeToNBT(powerUpNbt);
-               nbt.setTag(powerUpName, powerUpNbt);
-            } while(majorPos != arg.length() - 1);
-         }
-         catch(Exception excp)
-         {
-            // ok, so this is kinda the Lazy Man's way of making sure nothing really goes wrong
-            HardcoreWither.logger.debug("PowerUp Command Formatting Error (probably) not accounted for " + excp);
-            return false;
-         }
-         return true;
       }
    };
    
