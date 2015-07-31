@@ -53,19 +53,22 @@ public class EventHandler
    @SubscribeEvent
    public void onSpawnMob(EntityJoinWorldEvent event)
    {
-      if (event.entity != null && event.entity.getClass() == EntityWither.class)
+      if(!event.world.isRemote)
       {
-         EntityWither theWither = (EntityWither)event.entity;
-         if( !powerUpManager.isWitherPoweredUp(theWither) )
+         if (event.entity != null && event.entity.getClass() == EntityWither.class)
          {
-            List nearbyPlayers = theWither.worldObj.getEntitiesWithinAABB(EntityPlayer.class, theWither.boundingBox.expand(64.0D, 64.0D, 64.0D));
-            double powerUpSize = 0.0;
-            for (int index = 0; index < nearbyPlayers.size(); ++index)
+            EntityWither theWither = (EntityWither)event.entity;
+            if( !powerUpManager.isWitherPoweredUp(theWither) )
             {
-               EntityPlayer player = (EntityPlayer)nearbyPlayers.get(index);
-               powerUpSize += playerHandler.wasAtWitherSpawn(player);
+               List nearbyPlayers = theWither.worldObj.getEntitiesWithinAABB(EntityPlayer.class, theWither.boundingBox.expand(64.0D, 64.0D, 64.0D));
+               double powerUpSize = 0.0;
+               for (int index = 0; index < nearbyPlayers.size(); ++index)
+               {
+                  EntityPlayer player = (EntityPlayer)nearbyPlayers.get(index);
+                  powerUpSize += playerHandler.wasAtWitherSpawn(player);
+               }
+               powerUpManager.powerUpWither( theWither, (int)Math.round(powerUpSize));
             }
-            powerUpManager.powerUpWither( theWither, (int)Math.round(powerUpSize));
          }
       }
    }
