@@ -3,6 +3,7 @@ package thor12022.hardcorewither.powerUps;
 import java.util.Random;
 
 import thor12022.hardcorewither.config.IConfigClass;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.boss.EntityWither;
@@ -49,15 +50,19 @@ class PowerUpLightning extends AbstractPowerUp implements IConfigClass
    {
       if( ownerWither.worldObj.getTotalWorldTime() > lightningNextTick )
       {
-         EntityLivingBase target = ownerWither.getAITarget();
-         if(target != null)
+         int targetId = ownerWither.getWatchedTargetId(0);
+         if( targetId != -1)
          {
-            double lightningXPos = target.lastTickPosX + (4 * random.nextGaussian() * lightningInaccuracy);
-            double lightningYPos = target.lastTickPosX + (4 * random.nextGaussian() * lightningInaccuracy);
-            double lightningZPos = target.lastTickPosX + (4 * random.nextGaussian() * lightningInaccuracy);
-            ownerWither.worldObj.addWeatherEffect(new EntityLightningBolt(ownerWither.worldObj, lightningXPos, lightningYPos, lightningZPos));
+            Entity target = ownerWither.worldObj.getEntityByID(targetId);
+            if(target != null)
+            {
+               double lightningXPos = target.lastTickPosX + (4 * random.nextGaussian() * lightningInaccuracy);
+               double lightningYPos = target.lastTickPosX + (4 * random.nextGaussian() * lightningInaccuracy);
+               double lightningZPos = target.lastTickPosX + (4 * random.nextGaussian() * lightningInaccuracy);
+               ownerWither.worldObj.addWeatherEffect(new EntityLightningBolt(ownerWither.worldObj, lightningXPos, lightningYPos, lightningZPos));
+               setNextRandomTick();
+            }
          }
-         setNextRandomTick();
       }
    }
 
