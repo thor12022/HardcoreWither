@@ -57,8 +57,8 @@ class PowerUpLightning extends AbstractPowerUp implements IConfigClass
             if(target != null)
             {
                double lightningXPos = target.lastTickPosX + (4 * random.nextGaussian() * lightningInaccuracy);
-               double lightningYPos = target.lastTickPosX + (4 * random.nextGaussian() * lightningInaccuracy);
-               double lightningZPos = target.lastTickPosX + (4 * random.nextGaussian() * lightningInaccuracy);
+               double lightningYPos = target.lastTickPosY + (4 * random.nextGaussian() * lightningInaccuracy);
+               double lightningZPos = target.lastTickPosZ + (4 * random.nextGaussian() * lightningInaccuracy);
                ownerWither.worldObj.addWeatherEffect(new EntityLightningBolt(ownerWither.worldObj, lightningXPos, lightningYPos, lightningZPos));
                setNextRandomTick();
             }
