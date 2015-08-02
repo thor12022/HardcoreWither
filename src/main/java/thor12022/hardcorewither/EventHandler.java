@@ -31,7 +31,7 @@ public class EventHandler
 {
    private PlayerHandler playerHandler;
    private PowerUpManager powerUpManager;
-   
+
    public EventHandler(PlayerHandler playerHandler, PowerUpManager powerUpManager)
    {
       this.playerHandler = playerHandler;
@@ -49,7 +49,7 @@ public class EventHandler
          HardcoreWither.logger.info(TextHelper.localize("info." + ModInformation.ID + ".console.config.refresh"));
       }
    }
-   
+
    @SubscribeEvent
    public void onSpawnMob(EntityJoinWorldEvent event)
    {
@@ -72,30 +72,36 @@ public class EventHandler
          }
       }
    }
-   
+
    @SubscribeEvent
    public void onLivingUpdate(LivingUpdateEvent event)
    {
-      if (event.entityLiving != null && event.entityLiving.getClass() == EntityWither.class)
+      if(!event.entity.worldObj.isRemote)
       {
-         powerUpManager.update((EntityWither) event.entityLiving);
+         if (event.entityLiving != null && event.entityLiving.getClass() == EntityWither.class)
+         {
+            powerUpManager.update((EntityWither) event.entityLiving);
+         }
       }
    }
-   
+
    @SubscribeEvent
    public void onEntityDieing(LivingDeathEvent event)
    {
-      if (event.entityLiving != null && event.entityLiving.getClass() == EntityWither.class)
+      if(!event.entity.worldObj.isRemote)
       {
-         List nearbyPlayers = event.entity.worldObj.getEntitiesWithinAABB(EntityPlayer.class, event.entity.boundingBox.expand(64.0D, 64.0D, 64.0D));
-         double powerUpSize = 0.0;
-         for (int index = 0; index < nearbyPlayers.size(); ++index)
+         if (event.entityLiving != null && event.entityLiving.getClass() == EntityWither.class)
          {
-            EntityPlayer player = (EntityPlayer)nearbyPlayers.get(index);
-            powerUpSize += playerHandler.wasAtWitherSpawn(player);
-            player.addChatMessage(new ChatComponentText(TextHelper.localize("debug." + ModInformation.ID + ".chat.wither-experience")));
+            List nearbyPlayers = event.entity.worldObj.getEntitiesWithinAABB(EntityPlayer.class, event.entity.boundingBox.expand(64.0D, 64.0D, 64.0D));
+            double powerUpSize = 0.0;
+            for (int index = 0; index < nearbyPlayers.size(); ++index)
+            {
+               EntityPlayer player = (EntityPlayer)nearbyPlayers.get(index);
+               powerUpSize += playerHandler.wasAtWitherSpawn(player);
+               player.addChatMessage(new ChatComponentText(TextHelper.localize("info." + ModInformation.ID + ".chat.wither-experience")));
+            }
+            powerUpManager.witherDied((EntityWither) event.entityLiving);
          }
-         powerUpManager.witherDied((EntityWither) event.entityLiving);
       }
    }
 }
