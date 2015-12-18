@@ -1,3 +1,1 @@
-#Hardcore Wither
-
-Making the Wither harder since 2015
+This project has moved to [GitLab](https://gitlab.com/thor12022/HardcoreWither/).
